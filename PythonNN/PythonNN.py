@@ -85,6 +85,16 @@ activation2.forward(layer2.output)
 
 print(activation2.output)
 print(np.sum(activation2.output, axis=1))
+
+inputs = [[-1.704815,1.503106,-0.817083,1.35356,-1.29366,1.362608,0.217795,0.462728,-1.237246],
+		  [-0.888962,0.711473,-0.480023,0.748175,-0.981763,1.765482,-0.445018,1.719143,-1.09625]]
+
+outputs = [[22.222923,-27.036774],
+		   [18.88552,-28.37744]]
+
+data_input = np.array(inputs)
+data_output = np.array(outputs)
+
 '''
 
 file = open('inputs/ML-CUP22-TR.csv')
@@ -96,21 +106,20 @@ for i in range(6):
 	next(csvreader)
 train_X = []
 train_Y = []
-for row in csvreader:
-	train_X.append(row[1:10])
-	train_Y.append(row[10 :])
+test_X = []
+test_Y = []
+for index, row in enumerate(csvreader):
+	if index < 1000:
+		train_X.append(row[1:10])
+		train_Y.append(row[10 :])
+	else:
+		test_X.append(row[1:10])
+		test_Y.append(row[10 :])
 
 train_X = np.array(train_X, dtype=float)
 train_Y = np.array(train_Y, dtype=float)
-
-inputs = [[-1.704815,1.503106,-0.817083,1.35356,-1.29366,1.362608,0.217795,0.462728,-1.237246],
-		  [-0.888962,0.711473,-0.480023,0.748175,-0.981763,1.765482,-0.445018,1.719143,-1.09625]]
-
-outputs = [[22.222923,-27.036774],
-		   [18.88552,-28.37744]]
-
-data_input = np.array(inputs)
-data_output = np.array(outputs)
+test_X = np.array(test_X, dtype=float)
+test_Y = np.array(test_Y, dtype=float)
 
 nn = NN1()
-nn.gradient_descent(train_X, train_Y, 50, 0.1)
+nn.gradient_descent(train_X, train_Y, test_X, test_Y, 500, 0.1)

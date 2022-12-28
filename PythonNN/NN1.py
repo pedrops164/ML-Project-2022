@@ -3,6 +3,7 @@ from Layer import Layer_Dense
 import numpy as np
 from LossMeanSquare import LossMeanSquare
 from ActivationLoss1 import Activation_Linear_Loss_LMS
+import matplotlib.pyplot as plt
 
 class NN1:
     def __init__(self):
@@ -22,11 +23,26 @@ class NN1:
     def update_params(self, alpha):
         self.layer.update_params(alpha)
 
-    def gradient_descent(self, X, Y, iterations, alpha):
+    def gradient_descent(self, X, Y, test_X, test_Y, iterations, alpha):
+        train_size = range(iterations)
+        train_Y_data = [] # loss
+        test_Y_data = [] # loss
         for i in range(iterations):
-            loss = self.forward(X, Y)
+            loss_validation = self.forward(test_X, test_Y)
+            test_Y_data.append(np.mean(loss_validation))
+            loss_empirical = self.forward(X, Y)
             self.back_prop(Y)
             self.update_params(alpha)
+            train_Y_data.append(np.mean(loss_empirical))
             if i % 5 == 0:
                 print("Iteration: ", i)
-                print(loss)
+                print(loss_empirical)
+                print(loss_validation)
+
+        plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
+        plt.plot(train_size, test_Y_data, color="#111111", label="Validation loss")
+        plt.xlabel('iterations')
+        plt.ylabel('loss')
+        plt.title("Learning curves")
+        plt.axis([0,iterations,0,20])
+        plt.show()
