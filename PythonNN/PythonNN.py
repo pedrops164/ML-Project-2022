@@ -121,5 +121,5 @@ train_Y = np.array(train_Y, dtype=float)
 test_X = np.array(test_X, dtype=float)
 test_Y = np.array(test_Y, dtype=float)
 
-nn = NN1()
-nn.gradient_descent(train_X, train_Y, test_X, test_Y, 500, 0.1)
+nn = NN1(9, 2, 2, 64)
+nn.gradient_descent(train_X, train_Y, test_X, test_Y, 5001, 1, 0.001, 0.7)
