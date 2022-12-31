@@ -79,13 +79,19 @@ class NN1:
         param_adjuster.increase_iteration()
 
 
-    def gradient_descent(self, X, Y, test_X, test_Y, iterations, lr, lr_decay, m):
+    def gradient_descent(self, X, Y, validation_X, validation_Y, iterations=0, lr=0, lr_decay=0, m=0, param_config=None):
+        if param_config != None:
+            iterations = param_config.n_it
+            lr = param_config.lr
+            lr_decay = param_config.lr_decay
+            m = param_config.momentum
+
         param_adjuster = SGD(learning_rate=lr, decay=lr_decay, momentum=m)
         train_size = range(iterations)
         train_Y_data = [] # loss
         test_Y_data = [] # loss
         for i in range(iterations):
-            loss_validation = self.forward(test_X, test_Y)
+            loss_validation = self.forward(validation_X, validation_Y)
             test_Y_data.append(np.mean(loss_validation))
             loss_empirical = self.forward(X, Y)
             self.back_prop(Y)
@@ -96,6 +102,7 @@ class NN1:
                 print(loss_empirical)
                 print(loss_validation)
 
+        '''
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
         plt.plot(train_size, test_Y_data, color="#111111", label="Validation loss")
         plt.xlabel('iterations')
@@ -103,3 +110,8 @@ class NN1:
         plt.title("Learning curves")
         plt.axis([0,iterations,0,20])
         plt.show()
+        '''
+
+        loss_empirical = self.forward(X, Y)
+        loss_validation = self.forward(validation_X, validation_Y)
+        return loss_empirical, loss_validation

@@ -6,8 +6,10 @@ from ActivationFunction1 import Activation_ReLU
 from ActivationFunction2 import Activation_Softmax
 from MLP import MLP
 from NN1 import NN1
+from CV import cross_validation
+from ParamConfig import ParamConfig
 
-np.random.seed(0)
+# np.random.seed(0)
 '''
 inputs = [1, 2, 3, 2.5]
 
@@ -121,5 +123,11 @@ train_Y = np.array(train_Y, dtype=float)
 test_X = np.array(test_X, dtype=float)
 test_Y = np.array(test_Y, dtype=float)
 
-nn = NN1(9, 2, 2, 64)
-nn.gradient_descent(train_X, train_Y, test_X, test_Y, 5001, 1, 0.001, 0.7)
+pg = ParamConfig(2, 64, 5001, 1, 0.001, 0.7)
+
+emp_error, val_error = cross_validation(pg, train_X, train_Y, 5) # 5 fold cross-validation
+
+print(emp_error)
+print(val_error)
+# nn = NN1(9, 2, 2, 64)
+# nn.gradient_descent(train_X, train_Y, test_X, test_Y, 5001, 1, 0.001, 0.7)
