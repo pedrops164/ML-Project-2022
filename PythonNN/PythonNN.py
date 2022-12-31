@@ -1,12 +1,14 @@
 import numpy as np
 import csv
 
+from Model import Model
 from Layer import Layer_Dense
 from ActivationFunction1 import Activation_ReLU
 from ActivationFunction2 import Activation_Softmax
 from MLP import MLP
 from NN1 import NN1
-from CV import cross_validation
+from CV import CrossValidation
+from Grid import Grid
 from ParamConfig import ParamConfig
 
 # np.random.seed(0)
@@ -123,11 +125,20 @@ train_Y = np.array(train_Y, dtype=float)
 test_X = np.array(test_X, dtype=float)
 test_Y = np.array(test_Y, dtype=float)
 
-pg = ParamConfig(2, 64, 5001, 1, 0.001, 0.7)
+# pg = ParamConfig(1, 16, 1001, 0.5, 0.0001, 0.7)
 
-emp_error, val_error = cross_validation(pg, train_X, train_Y, 5) # 5 fold cross-validation
 
-print(emp_error)
-print(val_error)
 # nn = NN1(9, 2, 2, 64)
 # nn.gradient_descent(train_X, train_Y, test_X, test_Y, 5001, 1, 0.001, 0.7)
+
+grid = Grid([1, 2],
+			[16],
+			[1001],
+			[0.5],
+			[0.0001],
+			[0.7])
+
+model = Model()
+model.model_selection(train_X, train_Y, grid, CrossValidation(5))
+model.model_assessment(test_X, test_Y)
+model.print_model()

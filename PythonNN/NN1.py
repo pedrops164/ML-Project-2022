@@ -7,18 +7,24 @@ import matplotlib.pyplot as plt
 from SGD import SGD
 
 class NN1:
-    def __init__(self, n_inputs, n_outputs, n_hiddenlayers, neurons_per_hidden_layer):
+    def __init__(self, n_inputs, n_outputs, param_config):
+        self.n_hiddenlayers = param_config.n_hl
+        self.neurons_per_hidden_layer = param_config.neurons_per_hl
+        self.n_it = param_config.n_it
+        self.lr = param_config.lr
+        self.lr_decay = param_config.lr_decay
+        self.m = param_config.momentum
         self.hidden_layers = []
-        if n_hiddenlayers == 0:
+        if self.n_hiddenlayers == 0:
             self.first_layer = None
             self.last_layer = Layer_Dense(n_inputs, n_outputs)
         else:
-            self.first_layer = Layer_Dense(n_inputs, neurons_per_hidden_layer, Activation_ReLU())
-            for i in range(n_hiddenlayers-1):
-                hidden_layer = Layer_Dense(neurons_per_hidden_layer, neurons_per_hidden_layer, Activation_ReLU())
+            self.first_layer = Layer_Dense(n_inputs, self.neurons_per_hidden_layer, Activation_ReLU())
+            for i in range(self.n_hiddenlayers-1):
+                hidden_layer = Layer_Dense(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
                 self.hidden_layers.append(hidden_layer)
 
-            self.last_layer = Layer_Dense(neurons_per_hidden_layer, n_outputs)
+            self.last_layer = Layer_Dense(self.neurons_per_hidden_layer, n_outputs)
 
         # self.layer1 = Layer_Dense(n_inputs, 5, Activation_ReLU())
         # self.layer2 = Layer_Dense(5, n_outputs)
@@ -79,28 +85,22 @@ class NN1:
         param_adjuster.increase_iteration()
 
 
-    def gradient_descent(self, X, Y, validation_X, validation_Y, iterations=0, lr=0, lr_decay=0, m=0, param_config=None):
-        if param_config != None:
-            iterations = param_config.n_it
-            lr = param_config.lr
-            lr_decay = param_config.lr_decay
-            m = param_config.momentum
+    def gradient_descent(self, X, Y):
 
-        param_adjuster = SGD(learning_rate=lr, decay=lr_decay, momentum=m)
-        train_size = range(iterations)
-        train_Y_data = [] # loss
-        test_Y_data = [] # loss
-        for i in range(iterations):
-            loss_validation = self.forward(validation_X, validation_Y)
-            test_Y_data.append(np.mean(loss_validation))
+        param_adjuster = SGD(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m)
+        # train_size = range(self.n_it)
+        # train_Y_data = [] # loss
+        # test_Y_data = [] # loss
+        for i in range(self.n_it):
+            # loss_validation = self.forward(validation_X, validation_Y)
+            # test_Y_data.append(np.mean(loss_validation))
             loss_empirical = self.forward(X, Y)
             self.back_prop(Y)
             self.adjust_parameters(param_adjuster)
-            train_Y_data.append(np.mean(loss_empirical))
+            # train_Y_data.append(np.mean(loss_empirical))
             if i % 5 == 0:
                 print("Iteration: ", i)
                 print(loss_empirical)
-                print(loss_validation)
 
         '''
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
@@ -113,5 +113,13 @@ class NN1:
         '''
 
         loss_empirical = self.forward(X, Y)
-        loss_validation = self.forward(validation_X, validation_Y)
-        return loss_empirical, loss_validation
+        # loss_validation = self.forward(validation_X, validation_Y)
+        return loss_empirical
+
+    def getParamConfig(self):
+        return "Number of hidden layer: " + str(self.n_hiddenlayers) + "\n" + \
+               "Number of neurons per hidden layer: " + str(self.neurons_per_hidden_layer) + "\n" + \
+               "Number of epochs: " + str(self.n_it) + "\n" + \
+               "Initial learning rate: " + str(self.lr) + "\n" + \
+               "Learning Rate decay: " + str(self.lr_decay) + "\n" + \
+               "Momentum value: " + str(self.m) + "\n"
