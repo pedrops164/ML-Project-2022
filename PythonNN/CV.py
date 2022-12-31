@@ -15,8 +15,9 @@ class CrossValidation:
     def cross_validation(self, pg, X, Y):
         #it is assumed that the input data is shuffled
         block_size = math.floor(len(X) / self.k)
-        n_inputs = 9
-        n_outputs = 2
+        print(X.shape)
+        n_inputs = X.shape[1]
+        n_outputs = Y.shape[1]
     
         training_errors = []
         validation_errors = []
