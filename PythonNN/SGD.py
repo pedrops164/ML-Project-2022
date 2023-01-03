@@ -2,15 +2,18 @@
 # Stochastic Gradient Descent
 class SGD:
 
-    def __init__(self, learning_rate=0.7, decay=0., momentum=0.):
+    def __init__(self, learning_rate=0.7, decay=0., momentum=0., min_lr = 0.):
         self.starting_learning_rate = learning_rate
         self.lr_decay = decay
         self.lr = self.starting_learning_rate
         self.n_iterations = 0
         self.momentum = momentum
+        self.min_lr = min_lr
 
     def decay_lr(self):
-        if self.lr_decay != 0:
+        if self.lr_decay != 0 and self.min_lr < self.lr:
+            # we update the learning rate, if the learning rate decay is not zero,
+            # and if we haven't reached the minimum learning rate
             self.lr = self.lr * (1. / (1. + self.lr_decay))
 
     def adjust_parameters(self, layer):

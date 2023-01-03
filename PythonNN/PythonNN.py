@@ -51,14 +51,15 @@ train_Y = np.array(train_Y, dtype=float)
 test_X = np.array(test_X, dtype=float)
 test_Y = np.array(test_Y, dtype=float)
 
-grid = Grid([1, 2], # number of hidden layers
-			[16], # neurons per hidden layer
-			[1001], # number of iterations
-			[0.5], # initial learning rate
-			[0.0001], # learning rate decay
-			[0.7]) # momentum value
+grid = Grid([2], # number of hidden layers
+			[64], # neurons per hidden layer
+			[2001], # number of iterations
+			[0.8], # initial learning rate
+			[0], # learning rate decay
+			[0.7], # momentum value
+			[0]) # minimum learning rate
 
 model = Model()
-model.model_selection(train_X, train_Y, grid, CrossValidation(5))
+model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=5))
 model.model_assessment(test_X, test_Y)
 model.print_model()

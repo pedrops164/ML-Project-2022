@@ -7,8 +7,10 @@ class Model:
         best_model = None
         best_training_error = None
         best_validation_error = None
+        current_cfg = 1
         for config in grid.configs:
             # config is of type ParamConfig
+            # cv.train_config(config, X, Y, n_runs)
             nn, tr_error, vl_error = cv.cross_validation(config, X, Y)
             if best_model == None:
                 best_model = nn
@@ -22,6 +24,12 @@ class Model:
                 best_model = nn
                 best_training_error = tr_error
                 best_validation_error = vl_error
+
+            print("\nConfig " + str(current_cfg) + " of " + str(grid.n_configs))
+            print("\nParams: " + config.toString())
+            print("Training error: " + str(tr_error))
+            print("Validation error: " + str(vl_error) + "\n")
+            current_cfg += 1
     
         self.neural_network = best_model
         self.training_error = best_training_error

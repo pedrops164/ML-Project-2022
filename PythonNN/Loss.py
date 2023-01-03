@@ -2,5 +2,6 @@ import numpy as np
 
 class Loss:
     def calculate(self, output, y):
-        losses = self.forward(output, y)
-        return [np.mean(losses[0]), np.mean(losses[1])]
+        self.output = output
+        losses = self.forward(output, y) # returns 1d array
+        return np.mean(losses)
