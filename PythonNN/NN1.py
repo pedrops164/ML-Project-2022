@@ -137,15 +137,45 @@ class NN1:
                 Y_batch = Y_shuffled[batch_start:batch_end]
 
                 # loss_validation = self.forward(validation_X, validation_Y)
-                # test_Y_data.append(np.mean(loss_validation))
+                # test_Y_data.append(loss_validation)
                 predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
                 self.adjust_parameters(param_adjuster)
-                # train_Y_data.append(np.mean(loss_empirical))
+                # train_Y_data.append(loss_empirical)
                 if i % 5 == 0:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
-                    # print(loss_empirical)
+
+    # this function trains the neural network on dataset 1, and build a plot graph
+    # comparing the learning curves of datasets 1 and 2
+    def train_graphs(self, X1, Y1, X2, Y2, ):
+        param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
+        # train_size = range(self.n_it)
+        train_Y_data = [] # loss
+        # test_Y_data = [] # loss
+        if self.batch_size == 0:
+            self.batch_size = len(X)
+        n_batches = math.floor(len(X) / self.batch_size)
+        for i in range(self.n_it):
+            random_permutation = np.random.permutation(len(X))
+            X_shuffled = X[random_permutation]
+            Y_shuffled = Y[random_permutation]
+
+            for j in range(n_batches):
+                batch_start = j * self.batch_size
+                batch_end = (j+1) * self.batch_size
+                X_batch = X_shuffled[batch_start:batch_end]
+                Y_batch = Y_shuffled[batch_start:batch_end]
+
+                # loss_validation = self.forward(validation_X, validation_Y)
+                # test_Y_data.append(loss_validation)
+                predicted_Y, loss = self.forward(X_batch, Y_batch)
+                self.back_prop(Y_batch)
+                self.adjust_parameters(param_adjuster)
+                # train_Y_data.append(loss_empirical)
+                if i % 5 == 0:
+                    print("Iteration: ", i, ", Batch: ", j)
+                    self.print_measures(predicted_Y, Y_batch)
 
         '''
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")

@@ -42,8 +42,9 @@ class CrossValidation:
                 '''
                 nn = MONK_NN(pg)
     
-                training_error = nn.gradient_descent(training_X, training_Y)
-                validation_error = nn.forward(validation_X, validation_Y)
+                nn.gradient_descent(training_X, training_Y) # trains Neural Network
+                output_training, training_error = nn.forward(training_X, training_Y)
+                output_validation, validation_error = nn.forward(validation_X, validation_Y)
                 training_errors.append(training_error)
                 validation_errors.append(validation_error)
     
