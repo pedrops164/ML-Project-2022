@@ -3,6 +3,7 @@ import numpy as np
 from Model import Model
 from Layer import Layer_Dense
 from ActivationFunction1 import Activation_ReLU
+from LossBinaryCrossEntropy import BCE
 from NN1 import NN1
 from CV import CrossValidation
 from Grid import Grid
@@ -53,21 +54,22 @@ def initialize_cup_tr(path, test_size_proportion):
 	return train_X, train_Y, test_X, test_Y
 
 
-X, Y = parse_monk("inputs/monks-1.train")
+X1, Y1 = parse_monk("inputs/monks-1.train")
+X2, Y2 = parse_monk("inputs/monks-1.test")
 
-print(Y)
+pg = ParamConfig(1,10,500,0.5,0,0.9,0,0,0)
+# cv = CrossValidation(k=4, runs=1)
+# nn, tr_errors, vl_errors = cv.cross_validation(pg,X1,Y1)
+# output, final_loss = nn.forward(X1, Y1)
+# final_accuracy = nn.accuracy.calculate(output, Y1)
+# print("final loss: " + str(final_loss))
+# print("final accuracy: " + str(final_accuracy))
 
-# Table with all the data
-# Columns: Iteration, Batch, Loss, Accuracy
-table = []
-
-pg = ParamConfig(1, 10, 500, 0.5, 0, 0.9, 0, 0, 0)
-cv = CrossValidation(k=4, runs=1)
-nn, tr_errors, vl_errors = cv.cross_validation(pg,X,Y,table)
-output, final_loss = nn.forward(X, Y)
-final_accuracy = nn.accuracy.calculate(output, Y)
-print("final loss: " + str(final_loss))
-print("final accuracy: " + str(final_accuracy))
+nn = MONK_NN(pg)
+#nn.gradient_descent(X1, Y1) # trains Neural Network
+#output_training, training_error = nn.forward(X1, Y1)
+#output_validation, validation_error = nn.forward(X2, Y2)
+nn.plot_learning_curves(X1, Y1, X2, Y2, BCE(), "plots/monk1_loss.png")
 
 
 """
