@@ -2,9 +2,9 @@ from Loss import Loss
 import numpy as np
 
 class MEE(Loss):
-    def forward(self, pred_values, target_values):
-        # pred values and target values have shape (n_samples, n_output)
-        subtract = pred_values - target_values
+    def forward(self, pred_y, true_y):
+        # predicted values and target values have shape (n_samples, n_output)
+        subtract = pred_y - true_y
         losses = subtract * subtract
         sum_losses = np.sum(losses, axis=1)
         sqrt_losses = np.sqrt(sum_losses)

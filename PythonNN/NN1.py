@@ -5,7 +5,6 @@ import math
 import numpy as np
 from LossMeanSquare import LossMeanSquare
 from LossMeanEuclidianError import MEE
-from ActivationLoss1 import Activation_Linear_Loss_LMS
 import matplotlib.pyplot as plt
 from SGD import SGD
 
