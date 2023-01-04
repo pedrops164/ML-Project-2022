@@ -8,6 +8,6 @@ class Accuracy:
         # we create matrix with same shape as output, filled with zeros
         accuracy = np.zeros_like(output)
         # we set to 1 the positions where the output is higher than 0 (0 is threshold)
-        accuracy[output > 0] = 1
+        accuracy[output > 0.5] = 1
         return np.mean(accuracy==y) # value between 0 and 1. closer to 1 is more accurate
 

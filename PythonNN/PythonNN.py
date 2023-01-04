@@ -55,6 +55,8 @@ def initialize_cup_tr(path, test_size_proportion):
 
 X, Y = parse_monk("inputs/monks-1.train")
 
+print(Y)
+
 
 pg = ParamConfig(1,5,500,0.1,0,0,0,0,0)
 cv = CrossValidation(k=2, runs=1)

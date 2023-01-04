@@ -6,9 +6,6 @@ class BCE(Loss):
     def forward(self, predicted_y, true_y):
         #Log loss = 1/N * sum(-(y_i * log(p_i) + (1-y_i) * log(1-p_i)))
 
-        # number of samples
-        n_samples = len(true_y)
-
         self.inputs = predicted_y
 
         # we remove the values that are 1 or 0, because the log would give infinity,

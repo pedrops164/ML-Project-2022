@@ -125,7 +125,6 @@ class NN1:
         # test_Y_data = [] # loss
         if self.batch_size == 0:
             self.batch_size = len(X)
-        print(X)
         n_batches = math.floor(len(X) / self.batch_size)
         for i in range(self.n_it):
             random_permutation = np.random.permutation(len(X))
