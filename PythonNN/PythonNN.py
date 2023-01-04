@@ -58,7 +58,16 @@ def initialize_cup_tr(path, test_size_proportion):
 X1, Y1 = parse_monk("inputs/monks-1.train")
 X2, Y2 = parse_monk("inputs/monks-1.test")
 
-pg = ParamConfig(1,10,500,0.5,0,0.9,0,0,0)
+n_hl = 1  # number of hidden layers
+neurons_per_hl = 10  # neurons per hidden layer
+n_it = 500  # number of iterations
+lr = 0.5  # initial learning rate
+lr_decay = 0  # learning rate decay
+momentum = 0.9  # momentum value
+min_lr = 0  # minimum learning rate
+lambda_param = 0  # l2 regularization lambda value
+batch_size = 0  # batch size
+pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 # cv = CrossValidation(k=4, runs=1)
 # nn, tr_errors, vl_errors = cv.cross_validation(pg,X1,Y1)
 # output, final_loss = nn.forward(X1, Y1)
