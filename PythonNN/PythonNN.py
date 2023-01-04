@@ -58,8 +58,8 @@ X, Y = parse_monk("inputs/monks-1.train")
 print(Y)
 
 
-pg = ParamConfig(1,5,500,0.1,0,0,0,0,0)
-cv = CrossValidation(k=2, runs=1)
+pg = ParamConfig(1,10,500,0.5,0,0.9,0,0,0)
+cv = CrossValidation(k=4, runs=1)
 cv.cross_validation(pg,X,Y)
 
 
