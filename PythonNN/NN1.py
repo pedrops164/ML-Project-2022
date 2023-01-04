@@ -116,7 +116,7 @@ class NN1:
         param_adjuster.adjust_parameters(self.last_layer)
         param_adjuster.increase_iteration()
 
-    def gradient_descent(self, X, Y):
+    def gradient_descent(self, X, Y, table):
 
         param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
         # train_size = range(self.n_it)
@@ -142,9 +142,16 @@ class NN1:
                 self.back_prop(Y_batch)
                 self.adjust_parameters(param_adjuster)
                 # train_Y_data.append(loss_empirical)
-                if i % 5 == 0:
+                if i % 10 == 0:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
+
+                # Save measured data to table
+                l = str(self.loss.calculate(predicted_Y, Y_batch))
+                if (self.accuracy != None):
+                    a = str(self.accuracy.calculate(predicted_Y, Y_batch))
+                table.append([i, j, l, a])
+
 
     # this function trains the neural network on dataset 1, and build a plot graph
     # comparing the learning curves of datasets 1 and 2
@@ -173,6 +180,7 @@ class NN1:
                 self.back_prop(Y_batch)
                 self.adjust_parameters(param_adjuster)
                 # train_Y_data.append(loss_empirical)
+
                 if i % 5 == 0:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)

@@ -15,7 +15,7 @@ class CrossValidation:
     Receives ParamConfig object, the input data, and an int k (k-cross validation)
     Returns the mean training error, and validation error
     '''
-    def cross_validation(self, pg, X, Y):
+    def cross_validation(self, pg, X, Y, table):
         #it is assumed that the input data is shuffled
         block_size = math.floor(len(X) / self.k)
         n_inputs = X.shape[1]
@@ -42,7 +42,7 @@ class CrossValidation:
                 '''
                 nn = MONK_NN(pg)
     
-                nn.gradient_descent(training_X, training_Y) # trains Neural Network
+                nn.gradient_descent(training_X, training_Y, table) # trains Neural Network
                 output_training, training_error = nn.forward(training_X, training_Y)
                 output_validation, validation_error = nn.forward(validation_X, validation_Y)
                 training_errors.append(training_error)
@@ -50,7 +50,7 @@ class CrossValidation:
     
         neural_network = MONK_NN(pg)
         #we train on all training+validation data this time
-        neural_network.gradient_descent(X, Y)
+        neural_network.gradient_descent(X, Y, table)
 
         return neural_network, np.mean(training_errors), np.mean(validation_errors)
     

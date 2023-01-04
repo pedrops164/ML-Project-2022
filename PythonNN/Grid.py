@@ -2,15 +2,15 @@ from ParamConfig import ParamConfig
 
 class Grid:
     def __init__(self,
-        n_hl_list,
-        neurons_per_hl_list,
-        n_it_list,
-        lr_list,
-        lr_decay_list,
-        momentum_list,
-        min_lr_list,
-        lambda_list,
-        batch_size_list
+        n_hl_list, # number of hidden layers
+        neurons_per_hl_list, # neurons per hidden layer
+        n_it_list, # number of iterations
+        lr_list, # initial learning rate
+        lr_decay_list, # learning rate decay
+        momentum_list, # momentum value
+        min_lr_list, # minimum learning rate
+        lambda_list, # l2 regularization lambda value
+        batch_size_list # batch size
         ):
         self.n_configs = len(n_hl_list) * len(neurons_per_hl_list) * len(n_it_list) * \
             len(lr_list) * len (lr_decay_list) * len(momentum_list) * len(min_lr_list) * \

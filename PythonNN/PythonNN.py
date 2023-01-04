@@ -57,10 +57,13 @@ X, Y = parse_monk("inputs/monks-1.train")
 
 print(Y)
 
+# Table with all the data
+# Columns: Iteration, Batch, Loss, Accuracy
+table = []
 
-pg = ParamConfig(1,10,500,0.5,0,0.9,0,0,0)
+pg = ParamConfig(1, 10, 500, 0.5, 0, 0.9, 0, 0, 0)
 cv = CrossValidation(k=4, runs=1)
-nn, tr_errors, vl_errors = cv.cross_validation(pg,X,Y)
+nn, tr_errors, vl_errors = cv.cross_validation(pg,X,Y,table)
 output, final_loss = nn.forward(X, Y)
 final_accuracy = nn.accuracy.calculate(output, Y)
 print("final loss: " + str(final_loss))

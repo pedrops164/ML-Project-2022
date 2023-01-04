@@ -1,14 +1,14 @@
 class ParamConfig:
     def __init__(self,
-        n_hl,
-        neurons_per_hl,
-        n_it,
-        lr,
-        lr_decay,
-        momentum,
-        min_lr,
-        lambda_param,
-        batch_size
+        n_hl, # number of hidden layers
+        neurons_per_hl, # neurons per hidden layer
+        n_it, # number of iterations
+        lr, # initial learning rate
+        lr_decay, # learning rate decay
+        momentum, # momentum value
+        min_lr, # minimum learning rate
+        lambda_param, # l2 regularization lambda value
+        batch_size # batch size
         ):
 
         self.n_hl = n_hl
