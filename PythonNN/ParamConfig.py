@@ -6,7 +6,9 @@ class ParamConfig:
         lr,
         lr_decay,
         momentum,
-        min_lr
+        min_lr,
+        lambda_param,
+        batch_size
         ):
 
         self.n_hl = n_hl
@@ -16,6 +18,8 @@ class ParamConfig:
         self.lr_decay = lr_decay
         self.momentum = momentum
         self.min_lr = min_lr
+        self.lambda_param = lambda_param
+        self.batch_size = batch_size
 
     def toString(self):
         return \
@@ -25,6 +29,7 @@ class ParamConfig:
             "Initial learning rate: " + str(self.lr) + "\n" + \
             "Learning rate decay: " + str(self.lr_decay) + "\n" + \
             "Momentum: " + str(self.momentum) + "\n" + \
-            "Minimum learning rate: " + str(self.min_lr)
-
+            "Minimum learning rate: " + str(self.min_lr) + "\n" + \
+            "Lambda: " + str(self.lambda_param) + "\n" + \
+            "Batch size: " + str(self.batch_size)
 

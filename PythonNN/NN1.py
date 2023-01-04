@@ -1,6 +1,7 @@
 from ActivationFunction1 import Activation_ReLU
 from ActivationFunction3 import Activation_Linear
 from Layer import Layer_Dense
+import math
 import numpy as np
 from LossMeanSquare import LossMeanSquare
 from LossMeanEuclidianError import MEE
@@ -24,6 +25,11 @@ class NN1:
         self.m = param_config.momentum
         # minimum learning rate
         self.min_lr = param_config.min_lr
+        # lambda for regularization
+        self.lambda_param = param_config.lambda_param
+        # batch size
+        self.batch_size = param_config.batch_size
+
         self.hidden_layers = []
         if self.n_hiddenlayers == 0:
             # in this case there are no hidden layers, therefore it's just the input layer,
@@ -65,7 +71,22 @@ class NN1:
         self.last_layer.forward(inputs)
         # we calculate loss
         loss = self.loss.calculate(self.last_layer.output, Y)
+        loss += self.regularization_loss()
         return loss
+
+    def regularization_loss(self):
+        weight_sum = 0
+        if self.lambda_param > 0:
+            if self.first_layer != None:
+                weight_sum += np.sum(self.first_layer.weights * self.first_layer.weights)
+
+            for layer in self.hidden_layers:
+                weight_sum += np.sum(layer.weights * layer.weights)
+
+            weight_sum += np.sum(self.last_layer.weights * self.last_layer.weights)
+
+        return self.lambda_param * weight_sum
+        
 
     # we back propagate the gradients, changing the values of the weights and biases of the layers
     def back_prop(self, Y):
@@ -94,23 +115,35 @@ class NN1:
         param_adjuster.adjust_parameters(self.last_layer)
         param_adjuster.increase_iteration()
 
-
     def gradient_descent(self, X, Y):
 
-        param_adjuster = SGD(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr)
+        param_adjuster = SGD(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
         # train_size = range(self.n_it)
         # train_Y_data = [] # loss
         # test_Y_data = [] # loss
+        if self.batch_size == 0:
+            self.batch_size = len(X)
+        n_batches = math.floor(len(X) / self.batch_size)
         for i in range(self.n_it):
-            # loss_validation = self.forward(validation_X, validation_Y)
-            # test_Y_data.append(np.mean(loss_validation))
-            loss_empirical = self.forward(X, Y)
-            self.back_prop(Y)
-            self.adjust_parameters(param_adjuster)
-            # train_Y_data.append(np.mean(loss_empirical))
-            #if i % 5 == 0:
-            #    print("Iteration: ", i)
-            #    print(loss_empirical)
+            random_permutation = np.random.permutation(len(X))
+            X_shuffled = X[random_permutation]
+            Y_shuffled = Y[random_permutation]
+
+            for j in range(n_batches):
+                batch_start = j * self.batch_size
+                batch_end = (j+1) * self.batch_size
+                X_batch = X_shuffled[batch_start:batch_end]
+                Y_batch = Y_shuffled[batch_start:batch_end]
+
+                # loss_validation = self.forward(validation_X, validation_Y)
+                # test_Y_data.append(np.mean(loss_validation))
+                loss_empirical = self.forward(X_batch, Y_batch)
+                self.back_prop(Y_batch)
+                self.adjust_parameters(param_adjuster)
+                # train_Y_data.append(np.mean(loss_empirical))
+                if i % 50 == 0:
+                    print("Iteration: ", i, ", Batch: ", j)
+                    print(loss_empirical)
 
         '''
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
