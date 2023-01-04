@@ -1,6 +1,5 @@
 
-# Stochastic Gradient Descent
-class SGD:
+class ParameterAdjuster:
 
     def __init__(self, learning_rate=0.7, decay=0., momentum=0., min_lr = 0., lambda_param=0.):
         self.starting_learning_rate = learning_rate

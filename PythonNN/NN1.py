@@ -6,7 +6,7 @@ import numpy as np
 from LossMeanSquare import LossMeanSquare
 from LossMeanEuclidianError import MEE
 import matplotlib.pyplot as plt
-from SGD import SGD
+from Adjuster import ParameterAdjuster
 
 class NN1:
     def __init__(self, n_inputs, n_outputs, param_config):
@@ -116,7 +116,7 @@ class NN1:
 
     def gradient_descent(self, X, Y):
 
-        param_adjuster = SGD(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
+        param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
         # train_size = range(self.n_it)
         # train_Y_data = [] # loss
         # test_Y_data = [] # loss
