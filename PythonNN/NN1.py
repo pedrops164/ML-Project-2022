@@ -150,48 +150,32 @@ class NN1:
     # comparing the learning curves of datasets 1 and 2
     # also receives as input the path to the file to save the plot
     def plot_learning_curves(self, X1, Y1, X2, Y2, measure_function, filepath):
-        if self.batch_size == 0:
-            self.batch_size = len(X1)
-        n_batches = math.floor(len(X1) / self.batch_size)
         param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
-        train_size = range(self.n_it * n_batches)
+        train_size = range(self.n_it)
         train_Y_data = [] # measure (loss or accuracy)
         test_Y_data = [] # measure (loss or accuracy)
         
+        #for each epoch we train
         for i in range(self.n_it):
-            random_permutation = np.random.permutation(len(X1))
-            X1_shuffled = X1[random_permutation]
-            Y1_shuffled = Y1[random_permutation]
-            X2_shuffled = X2[random_permutation]
-            Y2_shuffled = Y2[random_permutation]
+            # we calculate the measure for the test dataset, not being trained,
+            # and we add to the learning curve
+            Y2_predicted, loss = self.forward(X2, Y2)
+            data2_measure = measure_function.calculate(Y2_predicted, Y2)
+            test_Y_data.append(data2_measure)
 
-            for j in range(n_batches):
-                batch_start = j * self.batch_size
-                batch_end = (j+1) * self.batch_size
-                X1_batch = X1_shuffled[batch_start:batch_end]
-                Y1_batch = Y1_shuffled[batch_start:batch_end]
-                X2_batch = X2_shuffled[batch_start:batch_end]
-                Y2_batch = Y2_shuffled[batch_start:batch_end]
+            # we calculate the measure for the training dataset, and we add
+            # to the learning curve
+            Y1_predicted, loss = self.forward(X1, Y1)
+            data1_measure = measure_function.calculate(Y1_predicted, Y1)
+            train_Y_data.append(data1_measure)
 
-                # we calculate the measure for the test dataset, not being trained,
-                # and we add to the learning curve
-                Y2_predicted, loss = self.forward(X2_batch, Y2_batch)
-                data2_measure = measure_function.calculate(Y2_predicted, Y2_batch)
-                test_Y_data.append(data2_measure)
-
-                # we calculate the measure for the training dataset, and we add
-                # to the learning curve
-                Y1_predicted, loss = self.forward(X1_batch, Y1_batch)
-                data1_measure = measure_function.calculate(Y1_predicted, Y1_batch)
-                train_Y_data.append(data1_measure)
-
-                #we backprop and adjust the parameters of the layers
-                self.back_prop(Y2_batch)
-                self.adjust_parameters(param_adjuster)
-                if i % 5 == 0:
-                    print("Iteration: ", i, ", Batch: ", j)
-                    self.print_measures(Y1_predicted, Y1_batch)
-                    
+            #we backprop and adjust the parameters of the layers
+            self.back_prop(Y1)
+            self.adjust_parameters(param_adjuster)
+            if i % 5 == 0:
+                print("Iteration: ", i)
+                self.print_measures(Y1_predicted, Y1)
+                
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
         plt.plot(train_size, test_Y_data, color="#111111", label="Validation loss")
         plt.xlabel('Epochs')

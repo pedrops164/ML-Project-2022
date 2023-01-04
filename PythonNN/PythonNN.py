@@ -4,6 +4,7 @@ from Model import Model
 from Layer import Layer_Dense
 from ActivationFunction1 import Activation_ReLU
 from LossBinaryCrossEntropy import BCE
+from Accuracy import Accuracy
 from NN1 import NN1
 from CV import CrossValidation
 from Grid import Grid
@@ -69,7 +70,7 @@ nn = MONK_NN(pg)
 #nn.gradient_descent(X1, Y1) # trains Neural Network
 #output_training, training_error = nn.forward(X1, Y1)
 #output_validation, validation_error = nn.forward(X2, Y2)
-nn.plot_learning_curves(X1, Y1, X2, Y2, BCE(), "plots/monk1_loss.png")
+nn.plot_learning_curves(X1, Y1, X2, Y2, Accuracy(), "plots/monk1_accuracy.png")
 
 
 """
