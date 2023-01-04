@@ -53,14 +53,15 @@ def initialize_cup_tr(path, test_size_proportion):
 	return train_X, train_Y, test_X, test_Y
 
 
-X, Y = parse_monk("inputs/monks-1.test")
+X, Y = parse_monk("inputs/monks-1.train")
 
-pg = ParamConfig(1,5,200,0.1,0,0,0,0,0)
+
+pg = ParamConfig(1,5,500,0.1,0,0,0,0,0)
 cv = CrossValidation(k=2, runs=1)
 cv.cross_validation(pg,X,Y)
 
-"""
 
+"""
 
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
