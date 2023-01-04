@@ -11,3 +11,5 @@ class Accuracy:
         accuracy[output > 0.5] = 1
         return np.mean(accuracy==y) # value between 0 and 1. closer to 1 is more accurate
 
+    def title(self):
+        return "Accuracy"

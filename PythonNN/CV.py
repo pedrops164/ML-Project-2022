@@ -53,6 +53,3 @@ class CrossValidation:
         neural_network.gradient_descent(X, Y)
 
         return neural_network, np.mean(training_errors), np.mean(validation_errors)
-    
-    
-    # def cross_validation(pg, X, Y, k):
