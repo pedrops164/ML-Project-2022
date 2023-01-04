@@ -1,3 +1,5 @@
+import numpy as np
+
 class Tanh:
     def forward(self, inputs):
         self.inputs = inputs

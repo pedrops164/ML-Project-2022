@@ -1,5 +1,7 @@
 import numpy as np
 from NN1 import NN1
+from CUP_NN import CUP_NN
+from MONK_NN import MONK_NN
 from ParamConfig import ParamConfig
 import math
 
@@ -38,14 +40,14 @@ class CrossValidation:
                 us getting penalised because of a lucky or unlucky
                 initialization of weights and biases.
                 '''
-                nn = NN1(n_inputs, n_outputs, pg)
+                nn = MONK_NN(pg)
     
                 training_error = nn.gradient_descent(training_X, training_Y)
                 validation_error = nn.forward(validation_X, validation_Y)
                 training_errors.append(training_error)
                 validation_errors.append(validation_error)
     
-        neural_network = NN1(n_inputs, n_outputs, pg)
+        neural_network = MONK_NN(pg)
         #we train on all training+validation data this time
         neural_network.gradient_descent(X, Y)
 

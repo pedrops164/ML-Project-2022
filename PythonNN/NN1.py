@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from Adjuster import ParameterAdjuster
 
 class NN1:
-    def __init__(self, n_inputs, n_outputs, param_config):
+    def __init__(self, n_inputs, n_outputs, param_config, activ_out, loss_funct, acc_funct=None):
         # number of hidden layers
         self.n_hiddenlayers = param_config.n_hl
         # number of neurons per hidden layer
@@ -50,10 +50,12 @@ class NN1:
                 hidden_layer = Layer_Dense(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
                 self.hidden_layers.append(hidden_layer)
 
-            self.last_layer = Layer_Dense(self.neurons_per_hidden_layer, n_outputs, Activation_Linear())
+            self.last_layer = Layer_Dense(self.neurons_per_hidden_layer, n_outputs, activ_out)
 
         # we define the loss function
-        self.loss = MEE()
+        # self.loss = MEE()
+        self.loss = loss_funct
+        self.accuracy = acc_funct
 
     # we propagate forward the inputs, and we return the loss, that's why we receive
     # the real outputs
@@ -69,9 +71,10 @@ class NN1:
 
         self.last_layer.forward(inputs)
         # we calculate loss
-        loss = self.loss.calculate(self.last_layer.output, Y)
-        loss += self.regularization_loss()
-        return loss
+        return self.last_layer.output # returns the predicted output
+        # loss = self.loss.calculate(self.last_layer.output, Y)
+        # loss += self.regularization_loss()
+        # return loss
 
     def regularization_loss(self):
         weight_sum = 0
@@ -122,6 +125,7 @@ class NN1:
         # test_Y_data = [] # loss
         if self.batch_size == 0:
             self.batch_size = len(X)
+        print(X)
         n_batches = math.floor(len(X) / self.batch_size)
         for i in range(self.n_it):
             random_permutation = np.random.permutation(len(X))
@@ -136,13 +140,15 @@ class NN1:
 
                 # loss_validation = self.forward(validation_X, validation_Y)
                 # test_Y_data.append(np.mean(loss_validation))
-                loss_empirical = self.forward(X_batch, Y_batch)
+                predicted_Y = self.forward(X_batch, Y_batch)
+                self.loss.calculate(predicted_Y, Y_batch)
                 self.back_prop(Y_batch)
                 self.adjust_parameters(param_adjuster)
                 # train_Y_data.append(np.mean(loss_empirical))
-                if i % 50 == 0:
+                if i % 5 == 0:
                     print("Iteration: ", i, ", Batch: ", j)
-                    print(loss_empirical)
+                    self.print_measures(predicted_Y, Y_batch)
+                    # print(loss_empirical)
 
         '''
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
@@ -154,9 +160,15 @@ class NN1:
         plt.show()
         '''
 
-        loss_empirical = self.forward(X, Y)
+        output = self.forward(X, Y)
+        loss_empirical = self.loss.calculate(output, Y)
         # loss_validation = self.forward(validation_X, validation_Y)
         return loss_empirical
+
+    def print_measures(self, predicted_Y, target_Y):
+        print("Loss: " + str(self.loss.calculate(predicted_Y, target_Y)))
+        if (self.accuracy != None):
+            print("Accuracy: " + str(self.accuracy.calculate(predicted_Y, target_Y)))
 
     def getParamConfig(self):
         return "Number of hidden layer: " + str(self.n_hiddenlayers) + "\n" + \

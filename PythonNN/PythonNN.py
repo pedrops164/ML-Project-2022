@@ -1,5 +1,4 @@
 import numpy as np
-import csv
 
 from Model import Model
 from Layer import Layer_Dense
@@ -8,6 +7,7 @@ from NN1 import NN1
 from CV import CrossValidation
 from Grid import Grid
 from ParamConfig import ParamConfig
+from MONK_NN import *
 
 def initialize_cup_tr(path, test_size_proportion):
 
@@ -53,6 +53,13 @@ def initialize_cup_tr(path, test_size_proportion):
 	return train_X, train_Y, test_X, test_Y
 
 
+X, Y = parse_monk("inputs/monks-1.test")
+
+pg = ParamConfig(1,5,200,0.1,0,0,0,0,0)
+cv = CrossValidation(k=2, runs=1)
+cv.cross_validation(pg,X,Y)
+
+"""
 
 
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
@@ -68,8 +75,10 @@ grid = Grid([1], # number of hidden layers
 			[0]) # batch size
 
 model = Model()
-model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=5))
+model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1))
 model.model_assessment(test_X, test_Y)
 model.print_model()
+
+"""
 
 
