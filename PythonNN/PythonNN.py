@@ -60,7 +60,11 @@ print(Y)
 
 pg = ParamConfig(1,10,500,0.5,0,0.9,0,0,0)
 cv = CrossValidation(k=4, runs=1)
-cv.cross_validation(pg,X,Y)
+nn, tr_errors, vl_errors = cv.cross_validation(pg,X,Y)
+output, final_loss = nn.forward(X, Y)
+final_accuracy = nn.accuracy.calculate(output, Y)
+print("final loss: " + str(final_loss))
+print("final accuracy: " + str(final_accuracy))
 
 
 """

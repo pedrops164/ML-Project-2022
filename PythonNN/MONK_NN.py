@@ -3,7 +3,6 @@ from ActivationFunction4 import Tanh
 from LossBinaryCrossEntropy import BCE
 from Accuracy import Accuracy
 import csv
-# from sklearn.preprocessing import OneHotEncoder
 from ActivationFunctions import Sigmoid
 from ParamConfig import ParamConfig
 import numpy as np
@@ -46,8 +45,5 @@ def parse_monk(filepath):
 
     X_data = np.array(X_data)
     Y_data = np.array(Y_data)
-
-    # X_data = OneHotEncoder().fit_transform(X_data).toarray().astype(np.float32)
-
 
     return X_data, Y_data

@@ -71,10 +71,9 @@ class NN1:
 
         self.last_layer.forward(inputs)
         # we calculate loss
-        return self.last_layer.output # returns the predicted output
-        # loss = self.loss.calculate(self.last_layer.output, Y)
-        # loss += self.regularization_loss()
-        # return loss
+        loss = self.loss.calculate(self.last_layer.output, Y)
+        loss += self.regularization_loss()
+        return self.last_layer.output, loss # returns the predicted output
 
     def regularization_loss(self):
         weight_sum = 0
@@ -139,8 +138,7 @@ class NN1:
 
                 # loss_validation = self.forward(validation_X, validation_Y)
                 # test_Y_data.append(np.mean(loss_validation))
-                predicted_Y = self.forward(X_batch, Y_batch)
-                self.loss.calculate(predicted_Y, Y_batch)
+                predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
                 self.adjust_parameters(param_adjuster)
                 # train_Y_data.append(np.mean(loss_empirical))
@@ -159,8 +157,7 @@ class NN1:
         plt.show()
         '''
 
-        output = self.forward(X, Y)
-        loss_empirical = self.loss.calculate(output, Y)
+        output, loss_empirical = self.forward(X, Y)
         # loss_validation = self.forward(validation_X, validation_Y)
         return loss_empirical
 
