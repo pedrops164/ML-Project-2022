@@ -94,7 +94,7 @@ class Model:
         target_output = np.mean(expected_outputs, axis=0)
         return target_output
 
-def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 3.):
+def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 100.):
     decent_configs = []
 
     for config in config_list:

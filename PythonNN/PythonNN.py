@@ -142,18 +142,18 @@ print(vl_errors) # final, average validation errors
 """
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
-grid = Grid([1,2], # number of hidden layers
-			[16,5], # neurons per hidden layer
-			[1501], # number of iterations
-			[0.5,1], # initial learning rate
+grid = Grid([2], # number of hidden layers
+			[64], # neurons per hidden layer
+			[5001], # number of iterations
+			[0.02], # initial learning rate
 			[0], # learning rate decay
-			[0], # momentum value
+			[0.5], # momentum value
 			[0], # minimum learning rate
-			[0], # l2 regularization lambda value
+			[1e-5], # l2 regularization lambda value
 			[0]) # batch size
 
 model = Model()
-model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1), top_n=3)
+model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1), top_n=1)
 model.model_assessment(test_X, test_Y)
 model.print_model()
 
