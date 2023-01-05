@@ -115,12 +115,10 @@ class NN1:
         param_adjuster.adjust_parameters(self.last_layer)
         param_adjuster.increase_iteration()
 
-    def gradient_descent(self, X, Y):
+    def train(self, X, Y, print_progress=False):
 
         param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
-        # train_size = range(self.n_it)
-        # train_Y_data = [] # loss
-        # test_Y_data = [] # loss
+
         if self.batch_size == 0:
             self.batch_size = len(X)
         n_batches = math.floor(len(X) / self.batch_size)
@@ -135,13 +133,10 @@ class NN1:
                 X_batch = X_shuffled[batch_start:batch_end]
                 Y_batch = Y_shuffled[batch_start:batch_end]
 
-                # loss_validation = self.forward(validation_X, validation_Y)
-                # test_Y_data.append(loss_validation)
                 predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
                 self.adjust_parameters(param_adjuster)
-                # train_Y_data.append(loss_empirical)
-                if i % 5 == 0:
+                if i%5==0 and print_progress:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
 
