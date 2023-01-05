@@ -55,7 +55,7 @@ def initialize_cup_tr(path, test_size_proportion):
 
 	return train_X, train_Y, test_X, test_Y
 
-"""
+
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-1.train")
 X2, Y2 = parse_monk("inputs/monks-1.test")
@@ -76,14 +76,24 @@ final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2
 
 print(final_measure_train)
 print(final_measure_test)
-"""
 
+
+"""
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
-pg = ParamConfig(1,16,1501,0.5,0,0.7,0,0,0)
+n_hl = 1  # number of hidden layers
+neurons_per_hl = 16  # neurons per hidden layer
+n_it = 1501  # number of iterations
+lr = 0.5  # initial learning rate
+lr_decay = 0  # learning rate decay
+momentum = 0.7  # momentum value
+min_lr = 0  # minimum learning rate
+lambda_param = 0  # l2 regularization lambda value
+batch_size = 0  # batch size
+pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 #initializes the training/validation and testing set
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 cv = CrossValidation(k=4, runs=3)
-# does k fold cross validation with given runs, with the trainining/validation set, and
+# does k fold cross validation with given runs, with the training/validation set, and
 # gives the final training and validation errors
 nn, tr_errors, vl_errors = cv.cross_validation(CUP_NN, pg, train_X, train_Y)
 print(tr_errors) # final, average training errors
@@ -95,7 +105,7 @@ print(vl_errors) # final, average validation errors
 # 
 # print(final_measure_train)
 # print(final_measure_test)
-
+"""
 
 """
 

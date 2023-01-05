@@ -1,3 +1,5 @@
+from matplotlib import pyplot
+
 from ActivationFunction1 import Activation_ReLU
 from ActivationFunction3 import Activation_Linear
 from Layer import Layer_Dense
@@ -6,6 +8,9 @@ import numpy as np
 from LossMeanEuclidianError import MEE
 import matplotlib.pyplot as plt
 from Adjuster import ParameterAdjuster
+from Accuracy import Accuracy
+from LossMeanSquare import MSE
+
 
 class NN1:
     def __init__(self, n_inputs, n_outputs, param_config, activ_out, loss_funct, acc_funct=None):
@@ -150,22 +155,30 @@ class NN1:
     def plot_learning_curves(self, X1, Y1, X2, Y2, measure_function, filepath, trials):
         param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
         train_size = range(self.n_it)
-        train_Y_data = [] # measure (loss or accuracy)
-        test_Y_data = [] # measure (loss or accuracy)
+        train_Y_accuracy = []  # measure (accuracy)
+        test_Y_accuracy = []  # measure (accuracy)
+        train_Y_loss = []  # measure (loss)
+        test_Y_loss = []  # measure (loss)
         
         #for each epoch we train
         for i in range(self.n_it):
             # we calculate the measure for the test dataset, not being trained,
             # and we add to the learning curve
             Y2_predicted, loss = self.forward(X2, Y2)
-            data2_measure = measure_function.calculate(Y2_predicted, Y2)
-            test_Y_data.append(data2_measure)
+            # data2_measure_accuracy = measure_function.calculate(Y2_predicted, Y2)
+            data2_measure_accuracy = Accuracy().calculate(Y2_predicted, Y2)
+            data2_measure_loss = MSE().calculate(Y2_predicted, Y2)
+            test_Y_accuracy.append(data2_measure_accuracy)
+            test_Y_loss.append(data2_measure_loss)
 
             # we calculate the measure for the training dataset, and we add
             # to the learning curve
             Y1_predicted, loss = self.forward(X1, Y1)
-            data1_measure = measure_function.calculate(Y1_predicted, Y1)
-            train_Y_data.append(data1_measure)
+            # data1_measure_accuracy = measure_function.calculate(Y1_predicted, Y1)
+            data1_measure_accuracy = Accuracy().calculate(Y1_predicted, Y1)
+            data1_measure_loss = MSE().calculate(Y1_predicted, Y1)
+            train_Y_accuracy.append(data1_measure_accuracy)
+            train_Y_loss.append(data1_measure_loss)
 
             #we backprop and adjust the parameters of the layers
             self.back_prop(Y1)
@@ -181,20 +194,45 @@ class NN1:
         measured_values_test = []
         for t in range(trials):
             Y2_predicted, loss = self.forward(X2, Y2)
-            data2_measure = measure_function.calculate(Y2_predicted, Y2)
-            measured_values_test.append(data2_measure)
+            # data2_measure_accuracy = measure_function.calculate(Y2_predicted, Y2)
+            data2_measure_accuracy = Accuracy().calculate(Y2_predicted, Y2)
+            data2_measure_loss = MSE().calculate(Y2_predicted, Y2)
+            measured_values_test.append(data2_measure_accuracy)
 
             Y1_predicted, loss = self.forward(X1, Y1)
-            data1_measure = measure_function.calculate(Y1_predicted, Y1)
-            measured_values_train.append(data1_measure)
+            # data1_measure_accuracy = measure_function.calculate(Y1_predicted, Y1)
+            data1_measure_accuracy = Accuracy().calculate(Y1_predicted, Y1)
+            data1_measure_loss = MSE().calculate(Y1_predicted, Y1)
+            measured_values_train.append(data1_measure_accuracy)
 
 
-        plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
-        plt.plot(train_size, test_Y_data, color="#111111", label="Validation loss")
+        # Plotting the data and saving it
+        plt.figure(figsize=(15, 4))
+        plt.subplot(1, 3, 1)
+        plt.plot(train_size, train_Y_accuracy, '--', color="b", label="Training")
+        plt.plot(train_size, test_Y_accuracy, color="r", label="Validation")
         plt.xlabel('Epochs')
-        plt.ylabel(measure_function.title())
-        plt.title("Learning Curves")
+        plt.ylabel(Accuracy().title())
+        plt.title("Epochs vs " + str(measure_function.title()))
+        plt.legend()
+
+        plt.subplot(1, 3, 2)
+        plt.plot(train_size, train_Y_loss, '--', color="b", label="Training")
+        plt.plot(train_size, test_Y_loss, color="r", label="Validation")
+        plt.xlabel('Epochs')
+        plt.ylabel(MSE().title())
+        plt.title("Epochs vs " + str(measure_function.title()))
+        plt.legend()
+
+        plt.subplot(1, 3, 3)
+        plt.plot(train_Y_accuracy, test_Y_accuracy, color="g", label="Accuracy (Train vs Test)")
+        plt.xlabel('Train Accuracy')
+        plt.ylabel('Test Accuracy')
+        plt.title("Train vs Test Accuracy")
+        plt.legend()
+
         plt.savefig(filepath)
+        plt.show()
 
         final_test_measured = np.mean(measured_values_test)
         final_train_measured = np.mean(measured_values_train)
