@@ -86,7 +86,7 @@ def finalize_cup_file(blind_set_path, model):
 	output_file.close()
 
 
-
+"""
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-2.train")
 X2, Y2 = parse_monk("inputs/monks-2.test")
@@ -107,7 +107,7 @@ final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2
 
 print(final_measure_train)
 print(final_measure_test)
-
+"""
 
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
@@ -139,23 +139,23 @@ print(vl_errors) # final, average validation errors
 # print(final_measure_test)
 
 
-"""
+
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
-grid = Grid([1], # number of hidden layers
-			[16], # neurons per hidden layer
+grid = Grid([1,2], # number of hidden layers
+			[16,5], # neurons per hidden layer
 			[1501], # number of iterations
-			[0.5], # initial learning rate
+			[0.5,1], # initial learning rate
 			[0], # learning rate decay
-			[0.7], # momentum value
+			[0], # momentum value
 			[0], # minimum learning rate
 			[0], # l2 regularization lambda value
 			[0]) # batch size
 
 model = Model()
-model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1))
+model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1), top_n=3)
 model.model_assessment(test_X, test_Y)
 model.print_model()
 
 finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
-"""
+
