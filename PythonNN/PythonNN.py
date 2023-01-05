@@ -68,18 +68,12 @@ min_lr = 0  # minimum learning rate
 lambda_param = 0  # l2 regularization lambda value
 batch_size = 0  # batch size
 pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
-# cv = CrossValidation(k=4, runs=1)
-# nn, tr_errors, vl_errors = cv.cross_validation(pg,X1,Y1)
-# output, final_loss = nn.forward(X1, Y1)
-# final_accuracy = nn.accuracy.calculate(output, Y1)
-# print("final loss: " + str(final_loss))
-# print("final accuracy: " + str(final_accuracy))
 
 nn = MONK_NN(pg)
-#nn.gradient_descent(X1, Y1) # trains Neural Network
-#output_training, training_error = nn.forward(X1, Y1)
-#output_validation, validation_error = nn.forward(X2, Y2)
-nn.plot_learning_curves(X1, Y1, X2, Y2, Accuracy(), "plots/monk1_accuracy.png")
+final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, Accuracy(), "plots/monk1_accuracy.png", 10)
+
+print(final_measure_train)
+print(final_measure_test)
 
 
 """

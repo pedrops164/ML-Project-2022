@@ -145,6 +145,10 @@ class NN1:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
 
+        # output, loss_empirical = self.forward(X1, Y1)
+        # # loss_validation = self.forward(validation_X, validation_Y)
+        # return loss_empirical
+
     # this function trains the neural network on dataset 1, and build a plot graph
     # comparing the learning curves of datasets 1 and 2
     # also receives as input the path to the file to save the plot
@@ -155,36 +159,40 @@ class NN1:
         test_Y_data = [] # measure (loss or accuracy)
         
         #for each epoch we train
-        for j in range(trials):
-            trial_train_Y_data = []
-            trial_test_Y_data = []
-            for i in range(self.n_it):
-                # we calculate the measure for the test dataset, not being trained,
-                # and we add to the learning curve
-                Y2_predicted, loss = self.forward(X2, Y2)
-                data2_measure = measure_function.calculate(Y2_predicted, Y2)
-                trial_test_Y_data.append(data2_measure)
+        for i in range(self.n_it):
+            # we calculate the measure for the test dataset, not being trained,
+            # and we add to the learning curve
+            Y2_predicted, loss = self.forward(X2, Y2)
+            data2_measure = measure_function.calculate(Y2_predicted, Y2)
+            test_Y_data.append(data2_measure)
 
-                # we calculate the measure for the training dataset, and we add
-                # to the learning curve
-                Y1_predicted, loss = self.forward(X1, Y1)
-                data1_measure = measure_function.calculate(Y1_predicted, Y1)
-                trial_train_Y_data.append(data1_measure)
+            # we calculate the measure for the training dataset, and we add
+            # to the learning curve
+            Y1_predicted, loss = self.forward(X1, Y1)
+            data1_measure = measure_function.calculate(Y1_predicted, Y1)
+            train_Y_data.append(data1_measure)
 
-                #we backprop and adjust the parameters of the layers
-                self.back_prop(Y1)
-                self.adjust_parameters(param_adjuster)
-                
-                if i % 5 == 0:
-                    print("Iteration: ", i)
-                    self.print_measures(Y1_predicted, Y1)
+            #we backprop and adjust the parameters of the layers
+            self.back_prop(Y1)
+            self.adjust_parameters(param_adjuster)
+            
+            if i % 5 == 0:
+                print("Iteration: ", i)
+                self.print_measures(Y1_predicted, Y1)
 
-            train_Y_data.append(trial_train_Y_data)
-            test_Y_data.append(trial_test_Y_data)
 
-        #print(train_Y_data.shape)
-        train_Y_data = np.mean(train_Y_data, axis=0)
-        test_Y_data = np.mean(test_Y_data, axis=0)
+        # now that the nn is trained, we calculate the final measured value
+        measured_values_train = []
+        measured_values_test = []
+        for t in range(trials):
+            Y2_predicted, loss = self.forward(X2, Y2)
+            data2_measure = measure_function.calculate(Y2_predicted, Y2)
+            measured_values_test.append(data2_measure)
+
+            Y1_predicted, loss = self.forward(X1, Y1)
+            data1_measure = measure_function.calculate(Y1_predicted, Y1)
+            measured_values_train.append(data1_measure)
+
 
         plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
         plt.plot(train_size, test_Y_data, color="#111111", label="Validation loss")
@@ -193,19 +201,10 @@ class NN1:
         plt.title("Learning Curves")
         plt.savefig(filepath)
 
-        '''
-        plt.plot(train_size, train_Y_data, '--', color="#111111", label="Training loss")
-        plt.plot(train_size, test_Y_data, color="#111111", label="Validation loss")
-        plt.xlabel('iterations')
-        plt.ylabel('loss')
-        plt.title("Learning curves")
-        plt.axis([0,iterations,0,20])
-        plt.show()
-        '''
+        final_test_measured = np.mean(measured_values_test)
+        final_train_measured = np.mean(measured_values_train)
 
-        output, loss_empirical = self.forward(X1, Y1)
-        # loss_validation = self.forward(validation_X, validation_Y)
-        return loss_empirical
+        return final_train_measured, final_test_measured
 
     def print_measures(self, predicted_Y, target_Y):
         print("Loss: " + str(self.loss.calculate(predicted_Y, target_Y)))
