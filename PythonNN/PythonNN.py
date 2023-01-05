@@ -86,29 +86,29 @@ def finalize_cup_file(blind_set_path, model):
 	output_file.close()
 
 
-"""
+
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
-X1, Y1 = parse_monk("inputs/monks-1.train")
-X2, Y2 = parse_monk("inputs/monks-1.test")
+X1, Y1 = parse_monk("inputs/monks-2.train")
+X2, Y2 = parse_monk("inputs/monks-2.test")
 
 n_hl = 1  # number of hidden layers
-neurons_per_hl = 15  # neurons per hidden layer
+neurons_per_hl = 100  # neurons per hidden layer
 n_it = 500  # number of iterations
-lr = 0.76  # initial learning rate
+lr = 0.7  # initial learning rate
 lr_decay = 0  # learning rate decay
-momentum = 0.83  # momentum value
+momentum = 0.9  # momentum value
 min_lr = 0  # minimum learning rate
 lambda_param = 0  # l2 regularization lambda value
 batch_size = 0  # batch size
 pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 
 nn = MONK_NN(pg)
-final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, Accuracy(), "plots/monk1_accuracy.png", 10)
+final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, "plots/monk1_accuracy.png", 10)
 
 print(final_measure_train)
 print(final_measure_test)
 
-"""
+
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
 n_hl = 1  # number of hidden layers
@@ -139,7 +139,7 @@ print(vl_errors) # final, average validation errors
 # print(final_measure_test)
 
 
-
+"""
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
 grid = Grid([1], # number of hidden layers
@@ -158,4 +158,4 @@ model.model_assessment(test_X, test_Y)
 model.print_model()
 
 finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
-
+"""
