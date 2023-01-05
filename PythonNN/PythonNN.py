@@ -55,7 +55,41 @@ def initialize_cup_tr(path, test_size_proportion):
 
 	return train_X, train_Y, test_X, test_Y
 
+<<<<<<< Updated upstream
 
+=======
+# This function receives the path to the blind test set of the cup,
+# and a model which will calculate the target value for each output,
+# and produces the final file with our target outputs
+def finalize_cup_file(blind_set_path, model):
+	blind_set = open(blind_set_path)
+	output_file_name = "outputs/team-name_ML-CUP22-TS.csv"
+	output_file = open(output_file_name, "a")
+	
+	# take out the comment lines
+	csvreader = csv.reader(blind_set)
+	header = []
+	header = next(csvreader)
+	for i in range(6):
+		next(csvreader)
+
+	output_file.write("Pedro Sousa, Diana Mateus, Nikolai Hoffmann")
+	output_file.write("Team name")
+	output_file.write("ML-CUP22")
+	output_file.write("05/01/2023")
+
+	for row in csvreader:
+		id = row[0]
+		input = row[1:]
+		output = model.calculate_output(input)
+		line = str(id) + "," + str(output[0]) + "," + str(output[1])
+		output_file.write(line)
+
+	output_file.close()
+
+
+"""
+>>>>>>> Stashed changes
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-1.train")
 X2, Y2 = parse_monk("inputs/monks-1.test")

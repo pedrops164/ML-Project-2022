@@ -47,3 +47,7 @@ class Model:
         print("Validation error: " + str(self.validation_error))
         print("Test error: " + str(self.test_error))
         print("Final Hyper parameters:\n" + self.neural_network.getParamConfig())
+
+
+    def calculate_output(self):
+        pass
