@@ -154,7 +154,7 @@ class NN:
     # this function trains the neural network on dataset 1, and build a plot graph
     # comparing the learning curves of datasets 1 and 2
     # also receives as input the path to the file to save the plot
-    def plot_learning_curves(self, X1, Y1, X2, Y2, measure_function, filepath, trials):
+    def plot_learning_curves(self, X1, Y1, X2, Y2, filepath, trials):
         param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
         train_size = range(self.n_it)
         train_Y_accuracy = []  # measure (accuracy)
@@ -226,12 +226,14 @@ class NN:
         plt.title("Epochs vs " + str(MSE().title()))
         plt.legend()
 
+        """
         plt.subplot(1, 3, 3)
         plt.plot(train_Y_accuracy, test_Y_accuracy, color="g", label="Accuracy (Train vs Test)")
         plt.xlabel('Train Accuracy')
         plt.ylabel('Test Accuracy')
         plt.title("Train vs Test Accuracy")
         plt.legend()
+        """
 
         plt.savefig(filepath)
         plt.show()

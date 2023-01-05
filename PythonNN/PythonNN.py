@@ -92,9 +92,9 @@ X1, Y1 = parse_monk("inputs/monks-2.train")
 X2, Y2 = parse_monk("inputs/monks-2.test")
 
 n_hl = 1  # number of hidden layers
-neurons_per_hl = 100  # neurons per hidden layer
+neurons_per_hl = 16  # neurons per hidden layer
 n_it = 500  # number of iterations
-lr = 0.7  # initial learning rate
+lr = 0.95  # initial learning rate
 lr_decay = 0  # learning rate decay
 momentum = 0.9  # momentum value
 min_lr = 0  # minimum learning rate
