@@ -2,10 +2,9 @@ import numpy as np
 
 from Model import Model
 from Layer import Layer_Dense
-from ActivationFunction1 import Activation_ReLU
-from LossBinaryCrossEntropy import BCE
+from LossFunctions import BCE
 from Accuracy import Accuracy
-from NN1 import NN1
+from NN import NN
 from CV import CrossValidation
 from Grid import Grid
 from ParamConfig import ParamConfig

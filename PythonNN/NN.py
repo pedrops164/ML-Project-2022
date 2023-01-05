@@ -1,18 +1,16 @@
 from matplotlib import pyplot
 
-from ActivationFunction1 import Activation_ReLU
-from ActivationFunction3 import Activation_Linear
+from ActivationFunctions import Activation_ReLU, Activation_Linear
 from Layer import Layer_Dense
 import math
 import numpy as np
-from LossMeanEuclidianError import MEE
+from LossFunctions import MEE, MSE
 import matplotlib.pyplot as plt
 from Adjuster import ParameterAdjuster
 from Accuracy import Accuracy
-from LossMeanSquare import MSE
 
 
-class NN1:
+class NN:
     def __init__(self, n_inputs, n_outputs, param_config, activ_out, loss_funct, acc_funct=None):
         # number of hidden layers
         self.n_hiddenlayers = param_config.n_hl

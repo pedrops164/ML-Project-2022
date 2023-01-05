@@ -1,13 +1,12 @@
-from NN1 import NN1
-from ActivationFunction4 import Tanh
-from LossBinaryCrossEntropy import BCE
+from NN import NN
+from LossFunctions import BCE
 from Accuracy import Accuracy
 import csv
 from ActivationFunctions import Sigmoid
 from ParamConfig import ParamConfig
 import numpy as np
 
-class MONK_NN(NN1):
+class MONK_NN(NN):
     def __init__(self, pg):
         super().__init__(6, 1, pg, Sigmoid(), BCE(), acc_funct=Accuracy())
 

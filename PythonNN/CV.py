@@ -1,5 +1,5 @@
 import numpy as np
-from NN1 import NN1
+from NN import NN
 from CUP_NN import CUP_NN
 from MONK_NN import MONK_NN
 from ParamConfig import ParamConfig
