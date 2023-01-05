@@ -92,7 +92,6 @@ class Model:
             expected_output = nn.output(input)
             expected_outputs.append(expected_output[0])
         target_output = np.mean(expected_outputs, axis=0)
-        print(target_output.shape)
         return target_output
 
 def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 3.):
