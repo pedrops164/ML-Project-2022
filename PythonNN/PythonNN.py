@@ -55,9 +55,6 @@ def initialize_cup_tr(path, test_size_proportion):
 
 	return train_X, train_Y, test_X, test_Y
 
-<<<<<<< Updated upstream
-
-=======
 # This function receives the path to the blind test set of the cup,
 # and a model which will calculate the target value for each output,
 # and produces the final file with our target outputs
@@ -89,7 +86,6 @@ def finalize_cup_file(blind_set_path, model):
 
 
 """
->>>>>>> Stashed changes
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-1.train")
 X2, Y2 = parse_monk("inputs/monks-1.test")
@@ -110,7 +106,6 @@ final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2
 
 print(final_measure_train)
 print(final_measure_test)
-
 
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
@@ -139,7 +134,6 @@ print(vl_errors) # final, average validation errors
 # 
 # print(final_measure_train)
 # print(final_measure_test)
-"""
 
 """
 
@@ -161,5 +155,3 @@ model.model_assessment(test_X, test_Y)
 model.print_model()
 
 """
-
-
