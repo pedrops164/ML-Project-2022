@@ -60,8 +60,8 @@ def initialize_cup_tr(path, test_size_proportion):
 # and produces the final file with our target outputs
 def finalize_cup_file(blind_set_path, model):
 	blind_set = open(blind_set_path)
-	output_file_name = "outputs/team-name_ML-CUP22-TS.csv"
-	output_file = open(output_file_name, "a")
+	output_file_name = "outputs/ErasmusNeuralNetwork_ML-CUP22-TS.csv"
+	output_file = open(output_file_name, "w")
 	
 	# take out the comment lines
 	csvreader = csv.reader(blind_set)
@@ -70,17 +70,19 @@ def finalize_cup_file(blind_set_path, model):
 	for i in range(6):
 		next(csvreader)
 
-	output_file.write("Pedro Sousa, Diana Mateus, Nikolai Hoffmann")
-	output_file.write("Team name")
-	output_file.write("ML-CUP22")
-	output_file.write("05/01/2023")
+	output_file.write("# Pedro Sousa, Diana Mateus, Nikolai Hoffmann\n")
+	output_file.write("# ErasmusNeuralNetwork\n")
+	output_file.write("# ML-CUP22\n")
+	output_file.write("# 05/01/2023\n")
 
 	for row in csvreader:
 		id = row[0]
 		input = row[1:]
+		input = np.array(input, dtype=float)
 		output = model.calculate_output(input)
 		line = str(id) + "," + str(output[0]) + "," + str(output[1])
 		output_file.write(line)
+		output_file.write("\n")
 
 	output_file.close()
 
@@ -108,6 +110,7 @@ print(final_measure_train)
 print(final_measure_test)
 
 """
+"""
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
 n_hl = 1  # number of hidden layers
 neurons_per_hl = 16  # neurons per hidden layer
@@ -127,6 +130,7 @@ cv = CrossValidation(k=4, runs=3)
 nn, tr_errors, vl_errors = cv.cross_validation(CUP_NN, pg, train_X, train_Y)
 print(tr_errors) # final, average training errors
 print(vl_errors) # final, average validation errors
+"""
 
 # IF YOU WANT TO BUILD THE PLOT FOR A CERTAIN ParamConfig pg, you do
 # nn = CUP_NN(pg)
@@ -135,7 +139,7 @@ print(vl_errors) # final, average validation errors
 # print(final_measure_train)
 # print(final_measure_test)
 
-"""
+
 
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
@@ -154,4 +158,5 @@ model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1))
 model.model_assessment(test_X, test_Y)
 model.print_model()
 
-"""
+finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
+

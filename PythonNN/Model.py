@@ -1,4 +1,5 @@
 from CV import CrossValidation
+from CUP_NN import CUP_NN
 import numpy as np
 
 class Model:
@@ -11,7 +12,7 @@ class Model:
         for config in grid.configs:
             # config is of type ParamConfig
             # cv.train_config(config, X, Y, n_runs)
-            nn, tr_error, vl_error = cv.cross_validation(config, X, Y)
+            nn, tr_error, vl_error = cv.cross_validation(CUP_NN, config, X, Y)
             if best_model == None:
                 best_model = nn
             if best_training_error == None:
@@ -39,8 +40,8 @@ class Model:
     def model_assessment(self, test_X, test_Y):
         # having chosen final model, model assessment estimates/evaluates its prediction error 
         # on new test data. Returns an estimation value (loss)
-        seperate_loss = self.neural_network.forward(test_X, test_Y)
-        self.test_error = np.mean(seperate_loss)
+        output, loss = self.neural_network.forward(test_X, test_Y)
+        self.test_error = loss
 
     def print_model(self):
         print("Training error: " + str(self.training_error))
@@ -49,5 +50,7 @@ class Model:
         print("Final Hyper parameters:\n" + self.neural_network.getParamConfig())
 
 
-    def calculate_output(self):
-        pass
+    # Given an input, returns the expected output of the trained neural network
+    def calculate_output(self, input):
+        expected_output = self.neural_network.output(input)
+        return expected_output[0]

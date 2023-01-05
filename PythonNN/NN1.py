@@ -64,6 +64,13 @@ class NN1:
     # we propagate forward the inputs, and we return the loss, that's why we receive
     # the real outputs
     def forward(self, inputs, Y):
+        # we calculate loss
+        expected_output = self.output(inputs)
+        loss = self.loss.calculate(expected_output, Y)
+        loss += self.regularization_loss()
+        return expected_output, loss # returns the predicted output
+
+    def output(self, inputs):
         if self.first_layer != None:
             self.first_layer.forward(inputs)
             A1 = self.first_layer.output
@@ -74,10 +81,7 @@ class NN1:
             inputs = layer.output
 
         self.last_layer.forward(inputs)
-        # we calculate loss
-        loss = self.loss.calculate(self.last_layer.output, Y)
-        loss += self.regularization_loss()
-        return self.last_layer.output, loss # returns the predicted output
+        return self.last_layer.output
 
     def regularization_loss(self):
         weight_sum = 0
