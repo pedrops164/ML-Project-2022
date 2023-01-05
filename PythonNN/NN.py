@@ -192,20 +192,24 @@ class NN:
 
 
         # now that the nn is trained, we calculate the final measured value
-        measured_values_train = []
-        measured_values_test = []
+        measured_accuracy_train = []
+        measured_accuracy_test = []
+        measured_loss_train = []
+        measured_loss_test = []
         for t in range(trials):
             Y2_predicted, loss = self.forward(X2, Y2)
             # data2_measure_accuracy = measure_function.calculate(Y2_predicted, Y2)
             data2_measure_accuracy = Accuracy().calculate(Y2_predicted, Y2)
             data2_measure_loss = MSE().calculate(Y2_predicted, Y2)
-            measured_values_test.append(data2_measure_accuracy)
+            measured_accuracy_test.append(data2_measure_accuracy)
+            measured_loss_test.append(data2_measure_loss)
 
             Y1_predicted, loss = self.forward(X1, Y1)
             # data1_measure_accuracy = measure_function.calculate(Y1_predicted, Y1)
             data1_measure_accuracy = Accuracy().calculate(Y1_predicted, Y1)
             data1_measure_loss = MSE().calculate(Y1_predicted, Y1)
-            measured_values_train.append(data1_measure_accuracy)
+            measured_accuracy_train.append(data1_measure_accuracy)
+            measured_loss_train.append(data1_measure_loss)
 
 
         # Plotting the data and saving it
@@ -238,8 +242,8 @@ class NN:
         plt.savefig(filepath)
         plt.show()
 
-        final_test_measured = np.mean(measured_values_test)
-        final_train_measured = np.mean(measured_values_train)
+        final_test_measured = [np.mean(measured_accuracy_test), np.mean(measured_loss_test)]
+        final_train_measured = [np.mean(measured_accuracy_train), np.mean(measured_loss_train)]
 
         return final_train_measured, final_test_measured
 
