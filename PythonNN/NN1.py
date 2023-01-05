@@ -213,7 +213,7 @@ class NN1:
         plt.plot(train_size, test_Y_accuracy, color="r", label="Validation")
         plt.xlabel('Epochs')
         plt.ylabel(Accuracy().title())
-        plt.title("Epochs vs " + str(measure_function.title()))
+        plt.title("Epochs vs " + str(Accuracy().title()))
         plt.legend()
 
         plt.subplot(1, 3, 2)
@@ -221,7 +221,7 @@ class NN1:
         plt.plot(train_size, test_Y_loss, color="r", label="Validation")
         plt.xlabel('Epochs')
         plt.ylabel(MSE().title())
-        plt.title("Epochs vs " + str(measure_function.title()))
+        plt.title("Epochs vs " + str(MSE().title()))
         plt.legend()
 
         plt.subplot(1, 3, 3)
