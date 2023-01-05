@@ -9,6 +9,7 @@ class Model:
         best_training_error = None
         best_validation_error = None
         current_cfg = 1
+        configs = remove_bad_configs(CUP_NN, grid.configs)
         for config in grid.configs:
             # config is of type ParamConfig
             # cv.train_config(config, X, Y, n_runs)
@@ -54,3 +55,18 @@ class Model:
     def calculate_output(self, input):
         expected_output = self.neural_network.output(input)
         return expected_output[0]
+
+def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 3.):
+    decent_configs = []
+
+    for config in config_list:
+        current_nn = nn(config)
+        # we are only running part of the training, and checking the loss
+        # at that point, to check if it's worth training with this config
+        current_nn.n_it = round(0.2 * current_nn.n_it)
+        current_nn.train(X,Y,print_progress=False)
+        output, loss = current_nn.forward(X, Y)
+        if loss < lossloss_threshold:
+            decent_configs.append(config)
+
+    return decent_configs
