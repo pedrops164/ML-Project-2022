@@ -1,7 +1,7 @@
 from matplotlib import pyplot
 
 from ActivationFunctions import Activation_ReLU, Activation_Linear
-from Layer import Layer_Dense
+from Layer import Layer
 import math
 import numpy as np
 from LossFunctions import MEE, MSE
@@ -38,21 +38,21 @@ class NN:
             # Layer contains the weights and biases between two layers, therefore one Layer
             # object is enough
             self.first_layer = None
-            self.last_layer = Layer_Dense(n_inputs, n_outputs)
+            self.last_layer = Layer(n_inputs, n_outputs)
         else:
             # in this case there are hidden layers, so we initialize them and we add
             # to the list of hidden_layers 
 
             # here we initialize the first layer seperately, because the number of inputs
             # is the number of inputs of the neural network
-            self.first_layer = Layer_Dense(n_inputs, self.neurons_per_hidden_layer, Activation_ReLU())
+            self.first_layer = Layer(n_inputs, self.neurons_per_hidden_layer, Activation_ReLU())
             for i in range(self.n_hiddenlayers-1):
                 # now we initialize the inner hidden layers, where the number of inputs and
                 # outputs are the same (number of neurons per hidden layer)
-                hidden_layer = Layer_Dense(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
+                hidden_layer = Layer(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
                 self.hidden_layers.append(hidden_layer)
 
-            self.last_layer = Layer_Dense(self.neurons_per_hidden_layer, n_outputs, activ_out)
+            self.last_layer = Layer(self.neurons_per_hidden_layer, n_outputs, activ_out)
 
         # we define the loss function
         # self.loss = MEE()
@@ -80,6 +80,15 @@ class NN:
 
         self.last_layer.forward(inputs)
         return self.last_layer.output
+
+    def reset_params(self):
+        if self.first_layer != None:
+            self.first_layer.reset_params()
+
+        for layer in self.hidden_layers:
+            layer.reset_params()
+
+        self.last_layer.reset_params()
 
     def regularization_loss(self):
         weight_sum = 0
@@ -145,6 +154,7 @@ class NN:
                 self.adjust_parameters(param_adjuster)
                 if i%5==0 and print_progress:
                     print("Iteration: ", i, ", Batch: ", j)
+                    print(param_adjuster.lr)
                     self.print_measures(predicted_Y, Y_batch)
 
         # output, loss_empirical = self.forward(X1, Y1)
@@ -186,9 +196,10 @@ class NN:
             self.back_prop(Y1)
             self.adjust_parameters(param_adjuster)
             
-            if i % 5 == 0:
+            if i % 50 == 0:
                 print("Iteration: ", i)
                 self.print_measures(Y1_predicted, Y1)
+                self.print_measures(Y2_predicted, Y2)
 
 
         # now that the nn is trained, we calculate the final measured value

@@ -1,7 +1,6 @@
 import numpy as np
 
 from Model import Model
-from Layer import Layer_Dense
 from LossFunctions import BCE
 from Accuracy import Accuracy
 from NN import NN
@@ -86,7 +85,7 @@ def finalize_cup_file(blind_set_path, model):
 	output_file.close()
 
 
-
+"""
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-2.train")
 X2, Y2 = parse_monk("inputs/monks-2.test")
@@ -107,28 +106,32 @@ final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2
 
 print("Train [Accuracy, Loss] =" + str(final_measure_train))
 print("Test [Accuracy, Loss] =" + str(final_measure_test))
-
+"""
 
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
 n_hl = 1  # number of hidden layers
 neurons_per_hl = 16  # neurons per hidden layer
-n_it = 1501  # number of iterations
+n_it = 25001  # number of iterations
 lr = 0.5  # initial learning rate
 lr_decay = 0  # learning rate decay
-momentum = 0.7  # momentum value
+momentum = 0.8  # momentum value
 min_lr = 0  # minimum learning rate
-lambda_param = 0  # l2 regularization lambda value
+lambda_param = 0.00001  # l2 regularization lambda value
 batch_size = 0  # batch size
 pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 #initializes the training/validation and testing set
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
-cv = CrossValidation(k=4, runs=3)
+# cv = CrossValidation(k=4, runs=1)
+nn = CUP_NN(pg)
+nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/teste.png",1)
 # does k fold cross validation with given runs, with the training/validation set, and
 # gives the final training and validation errors
-nn, tr_errors, vl_errors = cv.cross_validation(CUP_NN, pg, train_X, train_Y)
-print(tr_errors) # final, average training errors
-print(vl_errors) # final, average validation errors
+# nn, tr_errors, vl_errors = cv.cross_validation(CUP_NN, pg, train_X, train_Y)
+output, test_loss = nn.forward(test_X, test_Y)
+print(test_loss)
+# print(tr_errors) # final, average training errors
+# print(vl_errors) # final, average validation errors
 """
 
 # IF YOU WANT TO BUILD THE PLOT FOR A CERTAIN ParamConfig pg, you do
@@ -139,23 +142,30 @@ print(vl_errors) # final, average validation errors
 # print(final_measure_test)
 
 
-"""
+
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
-grid = Grid([2], # number of hidden layers
-			[64], # neurons per hidden layer
+grid = Grid([1], # number of hidden layers
+			[16, 20], # neurons per hidden layer
 			[5001], # number of iterations
-			[0.02], # initial learning rate
-			[0], # learning rate decay
-			[0.5], # momentum value
-			[0], # minimum learning rate
-			[1e-5], # l2 regularization lambda value
+			[0.9], # initial learning rate
+			[0.0001], # learning rate decay
+			[0.8], # momentum value
+			[0.5], # minimum learning rate
+			[0.0000001], # l2 regularization lambda value
 			[0]) # batch size
 
 model = Model()
-model.model_selection(train_X, train_Y, grid, CrossValidation(k=4, runs=1), top_n=1)
+model.model_selection(train_X, train_Y, test_X, test_Y, grid, CrossValidation(k=4, runs=1), top_n=1)
 model.model_assessment(test_X, test_Y)
+model.reset_params()
+
+#this time we train the best models with the whole
+X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
+model.retrain(X, Y)
+
 model.print_model()
 
-finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
-"""
+#finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
+
+

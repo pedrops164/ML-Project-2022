@@ -3,7 +3,7 @@ from CUP_NN import CUP_NN
 import numpy as np
 
 class Model:
-    def model_selection(self, X, Y, grid, cv, top_n=1):
+    def model_selection(self, X, Y, test_X, test_Y, grid, cv, top_n=1):
     
         self.top_n = top_n
         best_model = None
@@ -17,10 +17,12 @@ class Model:
         models = []
         training_errors = []
         validation_errors = []
+        file_path = "outputs/plot"
         for config in configs:
             # config is of type ParamConfig
             # cv.train_config(config, X, Y, n_runs)
-            nn, tr_error, vl_error = cv.cross_validation(CUP_NN, config, X, Y)
+            path = file_path + str(current_cfg) + ".png"
+            nn, tr_error, vl_error = cv.cross_validation(CUP_NN, config, X, Y, test_X, test_Y, plot_file_path=path)
             if best_model == None:
                 best_model = nn
             if best_training_error == None:
@@ -94,6 +96,15 @@ class Model:
         target_output = np.mean(expected_outputs, axis=0)
         return target_output
 
+    def reset_params(self):
+        for nn in self.neural_networks:
+            nn.reset_params()
+
+    # we retrain the best models on the whole dataset
+    def retrain(self, X, Y):
+        for nn in self.neural_networks:
+            nn.train(X,Y,print_progress=False)
+
 def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 100.):
     decent_configs = []
 
@@ -101,7 +112,7 @@ def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 100.):
         current_nn = nn(config)
         # we are only running part of the training, and checking the loss
         # at that point, to check if it's worth training with this config
-        current_nn.n_it = round(0.2 * current_nn.n_it)
+        current_nn.n_it = round(0.05 * current_nn.n_it)
         current_nn.train(X,Y,print_progress=False)
         output, loss = current_nn.forward(X, Y)
         if loss < loss_threshold:
