@@ -19,7 +19,7 @@ class Activation_ReLU:
         self.inputs_deriv = gradient.copy()
         # we are putting null value for the gradient where the input values are negative
         self.inputs_deriv[self.inputs <= 0] = 0
-        self.inputs_deriv /= n_samples
+        # self.inputs_deriv /= n_samples
 
 class Activation_Linear:
     def forward(self, inputs):
