@@ -30,7 +30,6 @@ class BCE(Loss):
 
         # dL/da = (-true_y/a + (1-true_y)/(1-a))
         # a are the inputs
-
         a = np.clip(self.inputs, 0.0000001, 0.9999999)
 
         d = (-Y/a + (1-Y)/(1-a)) / n_outputs
@@ -59,6 +58,9 @@ class MEE(Loss):
         # loss_gradient = nominator / self.useful_backprop
         self.inputs_deriv = loss_gradient / n_samples
 
+    def title(self):
+        return "MEE"
+
 
 class MSE(Loss):
     def forward(self, pred_values, target_values):
@@ -74,3 +76,6 @@ class MSE(Loss):
         n_samples = Y.shape[0]
         loss_gradient = 2 * self.useful_backprop
         self.inputs_deriv = loss_gradient / n_samples
+
+    def title(self):
+        return "MSE"

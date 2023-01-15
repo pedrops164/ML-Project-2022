@@ -1,5 +1,6 @@
 from CV import CrossValidation
 from CUP_NN import CUP_NN
+from PlotMaker import make_plot
 import numpy as np
 
 class Model:
@@ -62,6 +63,20 @@ class Model:
         self.neural_networks = models[:top_n]
         self.training_error = np.mean(training_errors[:top_n])
         self.validation_error = np.mean(validation_errors[:top_n])
+
+        # final model learning curves
+        final_model_lc_TR = []
+        final_model_lc_TS = []
+        for nn in self.neural_networks:
+            final_model_lc_TR.append(nn.tr_loss_lc)
+            final_model_lc_TS.append(nn.ts_loss_lc)
+
+        final_model_lc_TR = np.mean(final_model_lc_TR, axis=0)
+        final_model_lc_TS = np.mean(final_model_lc_TS, axis=0)
+
+        make_plot(range(final_model_lc_TR.shape[0]), final_model_lc_TR, final_model_lc_TS, "MEE", "Epochs vs MEE", "outputs/final_model.png", ylim=(0,3))
+
+
         # model selection returns the best model
     
     def model_assessment(self, test_X, test_Y):

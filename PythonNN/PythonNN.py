@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from Model import Model
 from LossFunctions import BCE
@@ -85,24 +86,28 @@ def finalize_cup_file(blind_set_path, model):
 	output_file.close()
 
 
+start = time.time()
+
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-2.train")
 X2, Y2 = parse_monk("inputs/monks-2.test")
 
+print(X1.shape)
+
 n_hl = 1  # number of hidden layers
-neurons_per_hl = 16  # neurons per hidden layer
-n_it = 500  # number of iterations
-lr = 0.9  # initial learning rate
-lr_decay = 0.000  # learning rate decay
-momentum = 0.99  # momentum value
-min_lr = 0.01  # minimum learning rate
+neurons_per_hl = 5  # neurons per hidden layer
+n_it = 300  # number of iterations
+lr = 0.1  # initial learning rate
+lr_decay = 0  # learning rate decay
+momentum = 0.5  # momentum value
+min_lr = 0  # minimum learning rate
 lambda_param = 0  # l2 regularization lambda value
 batch_size = 0  # batch size
 pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 
 nn = MONK_NN(pg)
-final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, "plots/monk1_accuracy.png", 10)
+final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, "plots/monk2_accuracy.png", 10)
 
 print("Train [Accuracy, Loss] =" + str(final_measure_train))
 print("Test [Accuracy, Loss] =" + str(final_measure_test))
@@ -143,32 +148,32 @@ print(test_loss)
 
 
 
-train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
+train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.25)
 
-grid = Grid([1], # number of hidden layers
-			[16], # neurons per hidden layer
-			[1001], # number of iterations
-			[0.9], # initial learning rate
-			[0.0001], # learning rate decay
+grid = Grid([2], # number of hidden layers
+			[64], # neurons per hidden layer
+			[3501], # number of iterations
+			[0.01], # initial learning rate
+			[0], # learning rate decay
 			[0.8], # momentum value
-			[0.5], # minimum learning rate
-			[0.0000001], # l2 regularization lambda value
+			[0], # minimum learning rate
+			[0.0001], # l2 regularization lambda value
 			[0]) # batch size
 
-#     model = Model()
-#     model.model_selection(train_X, train_Y, test_X, test_Y, grid, CrossValidation(k=4, runs=1), top_n=1)
-#     model.model_assessment(test_X, test_Y)
-#     model.reset_params()
-#     
-#     #this time we train the best models with the whole
-#     X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
-#     model.retrain(X, Y)
-#     
-#     model.print_model()
+model = Model()
+model.model_selection(train_X, train_Y, test_X, test_Y, grid, CrossValidation(k=4, runs=4), top_n=1)
+model.model_assessment(test_X, test_Y)
+model.reset_params()
+
+#this time we train the best models with the whole
+X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
+model.retrain(X, Y)
+
+model.print_model()
 
 #finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
 
-
+"""
 pg = ParamConfig(2, # number of hidden layers
 			64, # neurons per hidden layer
 			501, # number of iterations
@@ -182,5 +187,8 @@ pg = ParamConfig(2, # number of hidden layers
 nn = CUP_NN(pg)
 # nn.train(train_X, train_Y, print_progress=True)
 nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/plot1.png", 10)
-output, loss = nn.forward(test_X, test_Y)
-print("final loss ", loss)
+"""
+
+end = time.time()
+
+print("elapsed time: ", end - start)

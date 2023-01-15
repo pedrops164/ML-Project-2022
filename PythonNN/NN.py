@@ -6,6 +6,7 @@ import math
 import numpy as np
 from LossFunctions import MEE, MSE
 import matplotlib.pyplot as plt
+from PlotMaker import make_plot
 from Adjuster import ParameterAdjuster
 from Accuracy import Accuracy
 
@@ -30,6 +31,10 @@ class NN:
         self.lambda_param = param_config.lambda_param
         # batch size
         self.batch_size = param_config.batch_size
+        # TR learning curve array for loss
+        self.tr_loss_lc = []
+        # TS learning curve array for loss
+        self.ts_loss_lc = []
 
         self.param_adjuster = ParameterAdjuster(
             learning_rate=param_config.lr,
@@ -115,6 +120,7 @@ class NN:
     def back_prop(self, Y):
 
         self.loss.backprop(Y)
+        # self.last_layer.backprop(np.mean(self.loss.inputs_deriv, axis=0))
         self.last_layer.backprop(self.loss.inputs_deriv)
         previous_layer = self.last_layer
 
@@ -157,7 +163,7 @@ class NN:
                 predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
                 self.adjust_parameters()
-                if i%5==0 and print_progress:
+                if i%200==0 and print_progress:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
 
@@ -168,7 +174,7 @@ class NN:
     # this function trains the neural network on dataset 1, and build a plot graph
     # comparing the learning curves of datasets 1 and 2
     # also receives as input the path to the file to save the plot
-    def plot_learning_curves(self, X1, Y1, X2, Y2, filepath, trials):
+    def plot_learning_curves(self, X1, Y1, X2, Y2, filepath, trials, print_progress=False):
         train_size = range(self.n_it)
         train_Y_accuracy = []  # measure (accuracy)
         test_Y_accuracy = []  # measure (accuracy)
@@ -205,19 +211,19 @@ class NN:
             Y2_predicted, loss = self.forward(X2, Y2)
             # data2_measure_accuracy = measure_function.calculate(Y2_predicted, Y2)
             data2_measure_accuracy = Accuracy().calculate(Y2_predicted, Y2)
-            data2_measure_loss = MSE().calculate(Y2_predicted, Y2)
+            data2_measure_loss = MEE().calculate(Y2_predicted, Y2)
             test_Y_accuracy.append(data2_measure_accuracy)
-            test_Y_loss.append(data2_measure_loss)
+            self.ts_loss_lc.append(data2_measure_loss)
                 
             # we calculate the measure for the training dataset, and we add
             # to the learning curve
             Y1_predicted, loss = self.forward(X1, Y1)
             # data1_measure_accuracy = measure_function.calculate(Y1_predicted, Y1)
             data1_measure_accuracy = Accuracy().calculate(Y1_predicted, Y1)
-            data1_measure_loss = MSE().calculate(Y1_predicted, Y1)
+            data1_measure_loss = MEE().calculate(Y1_predicted, Y1)
             train_Y_accuracy.append(data1_measure_accuracy)
-            train_Y_loss.append(data1_measure_loss)
-            if i % 50 == 0:
+            self.tr_loss_lc.append(data1_measure_loss)
+            if i % 200 == 0 and print_progress:
                 print("Iteration: ", i)
                 self.print_measures(Y1_predicted, Y1)
                 self.print_measures(Y2_predicted, Y2)
@@ -232,47 +238,23 @@ class NN:
             Y2_predicted, loss = self.forward(X2, Y2)
             # data2_measure_accuracy = measure_function.calculate(Y2_predicted, Y2)
             data2_measure_accuracy = Accuracy().calculate(Y2_predicted, Y2)
-            data2_measure_loss = MSE().calculate(Y2_predicted, Y2)
+            data2_measure_loss = MEE().calculate(Y2_predicted, Y2)
             measured_accuracy_test.append(data2_measure_accuracy)
             measured_loss_test.append(data2_measure_loss)
 
             Y1_predicted, loss = self.forward(X1, Y1)
             # data1_measure_accuracy = measure_function.calculate(Y1_predicted, Y1)
             data1_measure_accuracy = Accuracy().calculate(Y1_predicted, Y1)
-            data1_measure_loss = MSE().calculate(Y1_predicted, Y1)
+            data1_measure_loss = MEE().calculate(Y1_predicted, Y1)
             measured_accuracy_train.append(data1_measure_accuracy)
             measured_loss_train.append(data1_measure_loss)
 
 
-        # Plotting the data and saving it
-        plt.figure(figsize=(15, 4))
-        plt.subplot(1, 3, 1)
-        plt.plot(train_size, train_Y_accuracy, '--', color="b", label="Training")
-        plt.plot(train_size, test_Y_accuracy, color="r", label="Validation")
-        plt.xlabel('Epochs')
-        plt.ylabel(Accuracy().title())
-        plt.title("Epochs vs " + str(Accuracy().title()))
-        plt.legend()
+        # make_plot(train_size, train_Y_accuracy, test_Y_accuracy, "Accuracy", "Epochs vs Accuracy", filepath)
+        make_plot(train_size, self.tr_loss_lc, self.ts_loss_lc, "MEE", "Epochs vs MEE", filepath, ylim=(0,3))
 
-        plt.subplot(1, 3, 2)
-        plt.plot(train_size, train_Y_loss, '--', color="b", label="Training")
-        plt.plot(train_size, test_Y_loss, color="r", label="Validation")
-        plt.xlabel('Epochs')
-        plt.ylabel(MSE().title())
-        plt.title("Epochs vs " + str(MSE().title()))
-        plt.legend()
-
-        """
-        plt.subplot(1, 3, 3)
-        plt.plot(train_Y_accuracy, test_Y_accuracy, color="g", label="Accuracy (Train vs Test)")
-        plt.xlabel('Train Accuracy')
-        plt.ylabel('Test Accuracy')
-        plt.title("Train vs Test Accuracy")
-        plt.legend()
-        """
-
-        plt.savefig(filepath)
-        plt.show()
+        # plt.savefig(filepath)
+        # plt.show()
 
         final_test_measured = [np.mean(measured_accuracy_test), np.mean(measured_loss_test)]
         final_train_measured = [np.mean(measured_accuracy_train), np.mean(measured_loss_train)]

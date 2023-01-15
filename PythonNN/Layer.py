@@ -7,7 +7,8 @@ class Layer:
 		limit = 0.05
 		self.n_inputs = n_inputs
 		self.n_neurons = n_neurons
-		self.weights = np.random.uniform(-limit, limit, size=(n_inputs,n_neurons))
+		self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
+		# self.weights = np.random.uniform(-limit, limit, size=(n_inputs,n_neurons))
 		self.biases = np.zeros((1, n_neurons))
 		self.activ = activ_function
 		self.momentums_weight = np.zeros_like(self.weights)
