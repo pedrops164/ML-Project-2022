@@ -250,7 +250,7 @@ class NN:
             measured_loss_train.append(data1_measure_loss)
 
 
-        # make_plot(train_size, train_Y_accuracy, test_Y_accuracy, "Accuracy", "Epochs vs Accuracy", filepath)
+        # make_plot(train_size, train_Y_accuracy, test_Y_accuracy, "Accuracy", "Epochs vs Accuracy", different_file_path)
         make_plot(train_size, self.tr_loss_lc, self.ts_loss_lc, "MEE", "Epochs vs MEE", filepath, ylim=(0,3))
 
         # plt.savefig(filepath)
