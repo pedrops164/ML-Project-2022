@@ -31,6 +31,13 @@ class NN:
         # batch size
         self.batch_size = param_config.batch_size
 
+        self.param_adjuster = ParameterAdjuster(
+            learning_rate=param_config.lr,
+           decay=param_config.lr_decay,
+          momentum=param_config.momentum,
+         min_lr = param_config.min_lr,
+        lambda_param = param_config.lambda_param)
+
         self.hidden_layers = []
         if self.n_hiddenlayers == 0:
             # in this case there are no hidden layers, therefore it's just the input layer,
@@ -119,21 +126,19 @@ class NN:
             self.first_layer.backprop(previous_layer.inputs_deriv)
 
 
-    def adjust_parameters(self, param_adjuster):
-        param_adjuster.decay_lr()
+    def adjust_parameters(self):
+        self.param_adjuster.decay_lr()
 
         if self.first_layer != None:
-            param_adjuster.adjust_parameters(self.first_layer)
+            self.param_adjuster.adjust_parameters(self.first_layer)
         
         for layer in self.hidden_layers:
-            param_adjuster.adjust_parameters(layer)
+            self.param_adjuster.adjust_parameters(layer)
 
-        param_adjuster.adjust_parameters(self.last_layer)
-        param_adjuster.increase_iteration()
+        self.param_adjuster.adjust_parameters(self.last_layer)
+        self.param_adjuster.increase_iteration()
 
     def train(self, X, Y, print_progress=False):
-
-        param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
 
         if self.batch_size == 0:
             self.batch_size = len(X)
@@ -151,10 +156,9 @@ class NN:
 
                 predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
-                self.adjust_parameters(param_adjuster)
+                self.adjust_parameters()
                 if i%5==0 and print_progress:
                     print("Iteration: ", i, ", Batch: ", j)
-                    print(param_adjuster.lr)
                     self.print_measures(predicted_Y, Y_batch)
 
         # output, loss_empirical = self.forward(X1, Y1)
@@ -165,7 +169,6 @@ class NN:
     # comparing the learning curves of datasets 1 and 2
     # also receives as input the path to the file to save the plot
     def plot_learning_curves(self, X1, Y1, X2, Y2, filepath, trials):
-        param_adjuster = ParameterAdjuster(learning_rate=self.lr, decay=self.lr_decay, momentum=self.m, min_lr = self.min_lr, lambda_param = self.lambda_param)
         train_size = range(self.n_it)
         train_Y_accuracy = []  # measure (accuracy)
         test_Y_accuracy = []  # measure (accuracy)
@@ -194,7 +197,7 @@ class NN:
 
             #we backprop and adjust the parameters of the layers
             self.back_prop(Y1)
-            self.adjust_parameters(param_adjuster)
+            self.adjust_parameters()
             
             if i % 50 == 0:
                 print("Iteration: ", i)

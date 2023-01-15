@@ -146,8 +146,8 @@ print(test_loss)
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
 
 grid = Grid([1], # number of hidden layers
-			[16, 20], # neurons per hidden layer
-			[5001], # number of iterations
+			[16], # neurons per hidden layer
+			[1001], # number of iterations
 			[0.9], # initial learning rate
 			[0.0001], # learning rate decay
 			[0.8], # momentum value
@@ -155,17 +155,30 @@ grid = Grid([1], # number of hidden layers
 			[0.0000001], # l2 regularization lambda value
 			[0]) # batch size
 
-model = Model()
-model.model_selection(train_X, train_Y, test_X, test_Y, grid, CrossValidation(k=4, runs=1), top_n=1)
-model.model_assessment(test_X, test_Y)
-model.reset_params()
-
-#this time we train the best models with the whole
-X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
-model.retrain(X, Y)
-
-model.print_model()
+#     model = Model()
+#     model.model_selection(train_X, train_Y, test_X, test_Y, grid, CrossValidation(k=4, runs=1), top_n=1)
+#     model.model_assessment(test_X, test_Y)
+#     model.reset_params()
+#     
+#     #this time we train the best models with the whole
+#     X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
+#     model.retrain(X, Y)
+#     
+#     model.print_model()
 
 #finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
 
 
+pg = ParamConfig(1, # number of hidden layers
+			16, # neurons per hidden layer
+			501, # number of iterations
+			0.005, # initial learning rate
+			0, # learning rate decay
+			0.8, # momentum value
+			0, # minimum learning rate
+			0, # l2 regularization lambda value
+			10) # batch size
+
+nn = CUP_NN(pg)
+
+nn.train(train_X, train_Y, print_progress=True)
