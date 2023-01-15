@@ -174,9 +174,32 @@ class NN:
         test_Y_accuracy = []  # measure (accuracy)
         train_Y_loss = []  # measure (loss)
         test_Y_loss = []  # measure (loss)
+
+        if self.batch_size == 0:
+            self.batch_size = len(X1)
+        n_batches = math.floor(len(X1) / self.batch_size)
         
         #for each epoch we train
         for i in range(self.n_it):
+            random_permutation = np.random.permutation(len(X1))
+            X1_shuffled = X1[random_permutation]
+            Y1_shuffled = Y1[random_permutation]
+
+            for batch in range(n_batches):
+                batch_start = batch * self.batch_size
+                batch_end = (batch+1) * self.batch_size
+                X_batch = X1_shuffled[batch_start:batch_end]
+                Y_batch = Y1_shuffled[batch_start:batch_end]
+
+                # we calculate the measure for the training dataset, and we add
+                # to the learning curve
+                Y_pred, loss = self.forward(X_batch, Y_batch)
+                #we backprop and adjust the parameters of the layers
+                self.back_prop(Y_batch)
+                self.adjust_parameters()
+
+            # here we calculate the loss with the full batch, for both data sets
+
             # we calculate the measure for the test dataset, not being trained,
             # and we add to the learning curve
             Y2_predicted, loss = self.forward(X2, Y2)
@@ -185,7 +208,7 @@ class NN:
             data2_measure_loss = MSE().calculate(Y2_predicted, Y2)
             test_Y_accuracy.append(data2_measure_accuracy)
             test_Y_loss.append(data2_measure_loss)
-
+                
             # we calculate the measure for the training dataset, and we add
             # to the learning curve
             Y1_predicted, loss = self.forward(X1, Y1)
@@ -194,11 +217,6 @@ class NN:
             data1_measure_loss = MSE().calculate(Y1_predicted, Y1)
             train_Y_accuracy.append(data1_measure_accuracy)
             train_Y_loss.append(data1_measure_loss)
-
-            #we backprop and adjust the parameters of the layers
-            self.back_prop(Y1)
-            self.adjust_parameters()
-            
             if i % 50 == 0:
                 print("Iteration: ", i)
                 self.print_measures(Y1_predicted, Y1)

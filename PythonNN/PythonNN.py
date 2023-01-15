@@ -169,8 +169,8 @@ grid = Grid([1], # number of hidden layers
 #finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
 
 
-pg = ParamConfig(1, # number of hidden layers
-			16, # neurons per hidden layer
+pg = ParamConfig(2, # number of hidden layers
+			64, # neurons per hidden layer
 			501, # number of iterations
 			0.005, # initial learning rate
 			0, # learning rate decay
@@ -180,5 +180,7 @@ pg = ParamConfig(1, # number of hidden layers
 			10) # batch size
 
 nn = CUP_NN(pg)
-
-nn.train(train_X, train_Y, print_progress=True)
+# nn.train(train_X, train_Y, print_progress=True)
+nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/plot1.png", 10)
+output, loss = nn.forward(test_X, test_Y)
+print("final loss ", loss)
