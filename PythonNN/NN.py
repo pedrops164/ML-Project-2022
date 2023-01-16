@@ -273,4 +273,6 @@ class NN:
                "Initial learning rate: " + str(self.lr) + "\n" + \
                "Learning Rate decay: " + str(self.lr_decay) + "\n" + \
                "Momentum value: " + str(self.m) + "\n" + \
-               "Minimum learning rate: " + str(self.min_lr) + "\n"
+               "Minimum learning rate: " + str(self.min_lr) + "\n" + \
+               "Lambda: " + str(self.lambda_param) + "\n" + \
+               "Batch size: " + str(self.batch_size) + "\n"

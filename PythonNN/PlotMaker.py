@@ -13,3 +13,4 @@ def make_plot(epochs, TR_data, TS_data, ylabel, title, filepath, ylim=None):
 
     plt.savefig(filepath)
     # plt.show()
+    plt.close()

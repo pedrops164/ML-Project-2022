@@ -150,18 +150,34 @@ print(test_loss)
 
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.25)
 
-grid = Grid([2], # number of hidden layers
-			[64], # neurons per hidden layer
+config_list = []
+
+grid1 = Grid([1], # number of hidden layers
+			[16,20,24], # neurons per hidden layer
 			[3501], # number of iterations
 			[0.01], # initial learning rate
 			[0], # learning rate decay
 			[0.8], # momentum value
 			[0], # minimum learning rate
-			[0.0001], # l2 regularization lambda value
+			[0], # l2 regularization lambda value
 			[0]) # batch size
 
+config_list += grid1.configs
+
+grid2 = Grid([2], # number of hidden layers
+			[64], # neurons per hidden layer
+			[3501], # number of iterations
+			[0.0075], # initial learning rate
+			[0], # learning rate decay
+			[0.8], # momentum value
+			[0], # minimum learning rate
+			[0.00005], # l2 regularization lambda value
+			[0]) # batch size
+
+config_list += grid2.configs
+
 model = Model()
-model.model_selection(train_X, train_Y, test_X, test_Y, grid, CrossValidation(k=4, runs=4), top_n=1)
+model.model_selection(train_X, train_Y, test_X, test_Y, config_list, CrossValidation(k=4, runs=4), top_n=9)
 model.model_assessment(test_X, test_Y)
 model.reset_params()
 

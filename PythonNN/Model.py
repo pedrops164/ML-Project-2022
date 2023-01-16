@@ -4,16 +4,19 @@ from PlotMaker import make_plot
 import numpy as np
 
 class Model:
-    def model_selection(self, X, Y, test_X, test_Y, grid, cv, top_n=1):
+    def model_selection(self, X, Y, test_X, test_Y, configs, cv, top_n=1):
     
         self.top_n = top_n
         best_model = None
         best_training_error = None
         best_validation_error = None
         current_cfg = 1
-        print("Initial configs: ", len(grid.configs))
-        configs = remove_bad_configs(CUP_NN, grid.configs, X, Y)
-        print("Filtered configs: ", len(configs))
+        print("Initial configs: ", len(configs))
+        configs = remove_bad_configs(CUP_NN, configs, X, Y)
+        n_configs = len(configs)
+        print("Filtered configs: ", n_configs)
+        if self.top_n > n_configs:
+            self.top_n = n_configs
 
         models = []
         training_errors = []
@@ -60,9 +63,11 @@ class Model:
         validation_errors = validation_errors[best_vl_order]
     
         # here we pick the top n models
+        self.training_errors = training_errors[:top_n]
+        self.validation_errors = validation_errors[:top_n]
         self.neural_networks = models[:top_n]
-        self.training_error = np.mean(training_errors[:top_n])
-        self.validation_error = np.mean(validation_errors[:top_n])
+        self.training_error = np.mean(self.training_errors)
+        self.validation_error = np.mean(self.validation_errors)
 
         # final model learning curves
         final_model_lc_TR = []
@@ -99,6 +104,8 @@ class Model:
         print("Final Hyper parameters:\n")
         for i in range(self.top_n):
             print("Model ", i)
+            print("Training error: ", self.training_errors[i])
+            print("Validation error: ", self.validation_errors[i])
             current_nn = self.neural_networks[i]
             print(current_nn.getParamConfig())
 

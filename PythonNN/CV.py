@@ -42,7 +42,7 @@ class CrossValidation:
                 '''
                 nn = nn_class(pg)
     
-                nn.train(training_X, training_Y, print_progress=True) # trains Neural Network
+                nn.train(training_X, training_Y, print_progress=False) # trains Neural Network
                 output_training, training_error = nn.forward(training_X, training_Y)
                 output_validation, validation_error = nn.forward(validation_X, validation_Y)
                 training_errors.append(training_error)
