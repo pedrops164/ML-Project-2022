@@ -147,7 +147,7 @@ print(test_loss)
 # print(final_measure_test)
 
 
-
+"""
 train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.25)
 
 config_list = []
@@ -186,6 +186,11 @@ X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
 model.retrain(X, Y)
 
 model.print_model()
+"""
+X1, Y1 = parse_monk("inputs/monks-2.train")
+pg = ParamConfig(1,5,500,0.1,0,0.5,0,0,0)
+nn = MONK_NN(pg)
+nn.train(X1, Y1, print_progress=True)
 
 #finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
 

@@ -163,7 +163,7 @@ class NN:
                 predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
                 self.adjust_parameters()
-                if i%200==0 and print_progress:
+                if i%5==0 and print_progress:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
 
