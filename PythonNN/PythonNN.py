@@ -88,7 +88,7 @@ def finalize_cup_file(blind_set_path, model):
 
 start = time.time()
 
-
+"""
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
 X1, Y1 = parse_monk("inputs/monks-1.train")
 X2, Y2 = parse_monk("inputs/monks-1.test")
@@ -97,23 +97,23 @@ print(X1.shape)
 print(Y1.shape)
 # exit()
 
-n_hl = 2  # number of hidden layers
-neurons_per_hl = 16  # neurons per hidden layer
+n_hl = 1  # number of hidden layers
+neurons_per_hl = 5  # neurons per hidden layer
 n_it = 500  # number of iterations
-lr = 0.99  # initial learning rate
+lr = 0.1  # initial learning rate
 lr_decay = 0  # learning rate decay
-momentum = 0.99  # momentum value
+momentum = 0.6 # momentum value
 min_lr = 0  # minimum learning rate
 lambda_param = 0  # l2 regularization lambda value
 batch_size = 0  # batch size
 pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 
 nn = MONK_NN(pg)
-final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, "plots/monk1_accuracy.png", 10)
+final_measure_train, final_measure_test = nn.plot_learning_curvesMonk(X1, Y1, X2, Y2, "plots/monk1_accuracy.png", 10)
 
 print("Train [Accuracy, Loss] =" + str(final_measure_train))
 print("Test [Accuracy, Loss] =" + str(final_measure_test))
-
+"""
 
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
@@ -139,6 +139,7 @@ output, test_loss = nn.forward(test_X, test_Y)
 print(test_loss)
 # print(tr_errors) # final, average training errors
 # print(vl_errors) # final, average validation errors
+"""
 """
 
 # IF YOU WANT TO BUILD THE PLOT FOR A CERTAIN ParamConfig pg, you do
@@ -179,7 +180,7 @@ grid2 = Grid([2], # number of hidden layers
 config_list += grid2.configs
 
 model = Model()
-model.model_selection(train_X, train_Y, test_X, test_Y, config_list, CrossValidation(k=4, runs=4), top_n=9)
+model.model_selection(train_X, train_Y, test_X, test_Y, config_list, CrossValidation(k=4, runs=1), top_n=1)
 model.model_assessment(test_X, test_Y)
 model.reset_params()
 
@@ -206,8 +207,9 @@ pg = ParamConfig(2, # number of hidden layers
 nn = CUP_NN(pg)
 # nn.train(train_X, train_Y, print_progress=True)
 nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/plot1.png", 10)
-"""
+
+
 
 end = time.time()
 
-print("elapsed time: ", end - start)
+print(elapsed time: ", end - start)

@@ -8,11 +8,12 @@ class Model:
     
         self.top_n = top_n
         best_model = None
+        best_config = None
         best_training_error = None
         best_validation_error = None
         current_cfg = 1
         print("Initial configs: ", len(configs))
-        configs = remove_bad_configs(CUP_NN, configs, X, Y)
+        #configs = remove_bad_configs(CUP_NN, configs, X, Y)
         n_configs = len(configs)
         print("Filtered configs: ", n_configs)
         if self.top_n > n_configs:
@@ -42,6 +43,7 @@ class Model:
     
             if vl_error < best_validation_error:
                 best_model = nn
+                best_config = config
                 best_training_error = tr_error
                 best_validation_error = vl_error
 
@@ -51,6 +53,7 @@ class Model:
             print("Validation error: " + str(vl_error) + "\n")
             current_cfg += 1
 
+        
         models = np.array(models)
         training_errors = np.array(training_errors)
         validation_errors = np.array(validation_errors)

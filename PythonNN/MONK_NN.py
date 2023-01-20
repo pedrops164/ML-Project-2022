@@ -51,4 +51,5 @@ def parse_monk(filepath):
     # 1-Hot Encoder
     X_data = OneHotEncoder().fit_transform(X_data).toarray().astype(np.float32)
 
+
     return X_data, Y_data
