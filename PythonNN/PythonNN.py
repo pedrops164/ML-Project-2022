@@ -155,34 +155,22 @@ train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0
 
 config_list = []
 
-grid1 = Grid([1], # number of hidden layers
-			[16,20,24], # neurons per hidden layer
-			[3501], # number of iterations
-			[0.01], # initial learning rate
+grid = Grid([1,4], # number of hidden layers
+			[25,50,75,100,150,200], # neurons per hidden layer
+			[1500,2000,2500,3000,3500], # number of iterations
+			[0.005,0.0075,0.01], # initial learning rate
 			[0], # learning rate decay
-			[0.8], # momentum value
+			[0.7, 0.8], # momentum value
 			[0], # minimum learning rate
-			[0], # l2 regularization lambda value
+			[0,0.00005,0.0001], # l2 regularization lambda value
 			[0]) # batch size
 
-config_list += grid1.configs
 
-#grid2 = Grid([2], # number of hidden layers
-#			[64], # neurons per hidden layer
-#			[3501], # number of iterations
-#			[0.0075], # initial learning rate
-#			[0], # learning rate decay
-#			[0.8], # momentum value
-#			[0], # minimum learning rate
-#			[0.00005], # l2 regularization lambda value
-#			[0]) # batch size
-#
-#config_list += grid2.configs
 
 logfile = open("outputs/log.txt", "w")
 
 model = Model(logfile)
-model.model_selection(train_X, train_Y, test_X, test_Y, config_list, CrossValidation(k=4, runs=1), top_n=1)
+model.model_selection(train_X, train_Y, test_X, test_Y, grid.configs, CrossValidation(k=4, runs=1), top_n=9)
 model.model_assessment(test_X, test_Y)
 model.reset_params()
 
@@ -192,7 +180,7 @@ model.retrain(X, Y)
 
 model.print_model()
 
-#finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
+finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
 """
 
 """

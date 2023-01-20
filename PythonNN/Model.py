@@ -79,7 +79,7 @@ class Model:
                 best_training_error = tr_error
                 best_validation_error = vl_error
 
-            self.logfile.write("\nConfig " + str(current_cfg) + " of " + str(len(configs)) + "\n")
+            self.logfile.write("\nConfig " + str(current_cfg) + " of " + str(len(fine_search_configs)) + "\n")
             self.logfile.write("\nParams: " + config.toString() + "\n")
             self.logfile.write("Training error: " + str(tr_error) + "\n")
             self.logfile.write("Validation error: " + str(vl_error) + "\n")
