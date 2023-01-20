@@ -1,3 +1,5 @@
+from sklearn.preprocessing import OneHotEncoder
+
 from NN import NN
 from LossFunctions import BCE
 from Accuracy import Accuracy
@@ -8,7 +10,8 @@ import numpy as np
 
 class MONK_NN(NN):
     def __init__(self, pg):
-        super().__init__(17, 1, pg, Sigmoid(), BCE(), acc_funct=Accuracy())
+        dimension = 17 # Dimension is 17 because of 1-Hot Encoding
+        super().__init__(dimension, 1, pg, Sigmoid(), BCE(), acc_funct=Accuracy())
 
 
 def parse_monk(filepath):
@@ -31,27 +34,21 @@ def parse_monk(filepath):
     Y_data = []
     for row in csvreader:
         label = int(row[1])
-        input = getClass1ofk(1, int(row[2]))
-        input = np.concatenate((input, getClass1ofk(2, int(row[3]))))
-        input = np.concatenate((input, getClass1ofk(3, int(row[4]))))
-        input = np.concatenate((input, getClass1ofk(4, int(row[5]))))
-        input = np.concatenate((input, getClass1ofk(5, int(row[6]))))
-        input = np.concatenate((input, getClass1ofk(6, int(row[7]))))
+        input = []
+        input.append(int(row[2]))
+        input.append(int(row[3]))
+        input.append(int(row[4]))
+        input.append(int(row[5]))
+        input.append(int(row[6]))
+        input.append(int(row[7]))
+
         X_data.append(input)
         Y_data.append([label])
 
     X_data = np.array(X_data)
     Y_data = np.array(Y_data)
 
-    return X_data, Y_data
+    # 1-Hot Encoder
+    X_data = OneHotEncoder().fit_transform(X_data).toarray().astype(np.float32)
 
-def getClass1ofk(class_id, value):
-    if class_id==1 or class_id==2 or class_id==4:
-        size = 3
-    elif class_id==3 or class_id==6:
-        size = 2
-    else:
-        size = 4
-    arr = np.zeros(size)
-    arr[value-1] = 1
-    return arr
+    return X_data, Y_data

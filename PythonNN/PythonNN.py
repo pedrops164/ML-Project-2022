@@ -88,30 +88,32 @@ def finalize_cup_file(blind_set_path, model):
 
 start = time.time()
 
-"""
+
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
-X1, Y1 = parse_monk("inputs/monks-2.train")
-X2, Y2 = parse_monk("inputs/monks-2.test")
+X1, Y1 = parse_monk("inputs/monks-1.train")
+X2, Y2 = parse_monk("inputs/monks-1.test")
 
 print(X1.shape)
+print(Y1.shape)
+# exit()
 
-n_hl = 1  # number of hidden layers
-neurons_per_hl = 5  # neurons per hidden layer
-n_it = 300  # number of iterations
-lr = 0.1  # initial learning rate
+n_hl = 2  # number of hidden layers
+neurons_per_hl = 16  # neurons per hidden layer
+n_it = 500  # number of iterations
+lr = 0.99  # initial learning rate
 lr_decay = 0  # learning rate decay
-momentum = 0.5  # momentum value
+momentum = 0.99  # momentum value
 min_lr = 0  # minimum learning rate
 lambda_param = 0  # l2 regularization lambda value
 batch_size = 0  # batch size
 pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
 
 nn = MONK_NN(pg)
-final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, "plots/monk2_accuracy.png", 10)
+final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, "plots/monk1_accuracy.png", 10)
 
 print("Train [Accuracy, Loss] =" + str(final_measure_train))
 print("Test [Accuracy, Loss] =" + str(final_measure_test))
-"""
+
 
 """
 # USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
@@ -186,13 +188,9 @@ X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
 model.retrain(X, Y)
 
 model.print_model()
-"""
-X1, Y1 = parse_monk("inputs/monks-2.train")
-pg = ParamConfig(1,5,500,0.1,0,0.5,0,0,0)
-nn = MONK_NN(pg)
-nn.train(X1, Y1, print_progress=True)
 
 #finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
+"""
 
 """
 pg = ParamConfig(2, # number of hidden layers

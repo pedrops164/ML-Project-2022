@@ -4,10 +4,10 @@ class Layer:
 	#Initializing weights and biases
 	def __init__(self, n_inputs, n_neurons, activ_function=None):
 		#self.weights = 0.05 * np.random.randn(n_inputs,n_neurons)
-		limit = 0.05
+		limit = 0.1
 		self.n_inputs = n_inputs
 		self.n_neurons = n_neurons
-		self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
+		self.weights = 0.01 * np.random.randn(n_inputs, n_neurons)
 		# self.weights = np.random.uniform(-limit, limit, size=(n_inputs,n_neurons))
 		self.biases = np.zeros((1, n_neurons))
 		self.activ = activ_function
@@ -35,6 +35,9 @@ class Layer:
 
 		# we calculate derivative of inputs to pass to the previous layer while back propagating
 		self.inputs_deriv = np.dot(gradient, self.weights.T)
+
+
+
 
 	# def update_params(self, alpha):
 	# 	self.weights = self.weights - alpha * self.weights_deriv
