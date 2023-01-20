@@ -15,9 +15,6 @@ class Model:
         best_config = None
         best_training_error = None
         best_validation_error = None
-        current_cfg = 1
-        print("Initial configs: ", len(configs))
-        #configs = remove_bad_configs(CUP_NN, configs, X, Y)
         self.logfile.write("Initial configs: " + str(len(configs)) + "\n")
         configs = remove_bad_configs(CUP_NN, configs, X, Y)
         n_configs = len(configs)
@@ -29,9 +26,38 @@ class Model:
         training_errors = []
         validation_errors = []
         file_path = "outputs/plot"
+
+        # This for cycle does a grid search with all the parameter configs, and chooses the one
+        # with the least validation error
         for config in configs:
             # config is of type ParamConfig
-            # cv.train_config(config, X, Y, n_runs)
+
+            # we dont want the plots of these configs
+            nn, tr_error, vl_error = cv.cross_validation(CUP_NN, config, X, Y)
+            if best_training_error == None:
+                best_training_error = tr_error
+            if best_validation_error == None:
+                best_validation_error = vl_error
+            
+    
+            if vl_error < best_validation_error:
+                best_config = config
+                best_training_error = tr_error
+                best_validation_error = vl_error
+
+        self.logfile.write("\nParams of best config: \n" + best_config.toString() + "\n")
+        self.logfile.write("Training error: " + str(best_training_error) + "\n")
+        self.logfile.write("Validation error: " + str(best_validation_error) + "\n")
+
+        fine_search_configs = create_fine_grid(best_config, 0.0025, 0.00005)
+
+        current_cfg = 1
+
+        self.logfile.write("Now trying out the finer configs...\n")
+        # this for cycle goes through all the finer configs, created from the best config, and
+        # chooses the best top n configs, so that afterwards we can ensemble.
+        for config in fine_search_configs:
+            # config is of type ParamConfig
             path = file_path + str(current_cfg) + ".png"
             nn, tr_error, vl_error = cv.cross_validation(CUP_NN, config, X, Y, test_X, test_Y, plot_file_path=path)
             if best_model == None:
@@ -59,7 +85,6 @@ class Model:
             self.logfile.write("Validation error: " + str(vl_error) + "\n")
             current_cfg += 1
 
-        
         models = np.array(models)
         training_errors = np.array(training_errors)
         validation_errors = np.array(validation_errors)
@@ -156,8 +181,8 @@ This function receives a param config object, and returns a list of configs that
 hyperparameters
 """
 def create_fine_grid(pg, lr_gap=0.005, lambda_param_gap=0.00005):
-    new_lr_list = np.random.uniform(pg.lr - gap, pg.lr + gap, 5)
-    new_lambda_list = np.random.uniform(pg.lambda_param - lambda_param_gap, pg.lambda_param + lambda_param_gap, 5)
+    new_lr_list = np.random.uniform(pg.lr - lr_gap, pg.lr + lr_gap, 2)
+    new_lambda_list = np.random.uniform(pg.lambda_param - lambda_param_gap, pg.lambda_param + lambda_param_gap, 2)
 
     grid = Grid([pg.n_hl],
                 [pg.neurons_per_hl],
@@ -167,7 +192,7 @@ def create_fine_grid(pg, lr_gap=0.005, lambda_param_gap=0.00005):
                 [pg.momentum],
                 [pg.min_lr],
                 new_lambda_list,
-                [batch_size])
+                [pg.batch_size])
 
 
     return grid.configs

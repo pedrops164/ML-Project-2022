@@ -167,17 +167,17 @@ grid1 = Grid([1], # number of hidden layers
 
 config_list += grid1.configs
 
-grid2 = Grid([2], # number of hidden layers
-			[64], # neurons per hidden layer
-			[3501], # number of iterations
-			[0.0075], # initial learning rate
-			[0], # learning rate decay
-			[0.8], # momentum value
-			[0], # minimum learning rate
-			[0.00005], # l2 regularization lambda value
-			[0]) # batch size
-
-config_list += grid2.configs
+#grid2 = Grid([2], # number of hidden layers
+#			[64], # neurons per hidden layer
+#			[3501], # number of iterations
+#			[0.0075], # initial learning rate
+#			[0], # learning rate decay
+#			[0.8], # momentum value
+#			[0], # minimum learning rate
+#			[0.00005], # l2 regularization lambda value
+#			[0]) # batch size
+#
+#config_list += grid2.configs
 
 logfile = open("outputs/log.txt", "w")
 
@@ -196,19 +196,6 @@ model.print_model()
 """
 
 """
-pg = ParamConfig(2, # number of hidden layers
-			64, # neurons per hidden layer
-			501, # number of iterations
-			0.005, # initial learning rate
-			0, # learning rate decay
-			0.8, # momentum value
-			0, # minimum learning rate
-			0, # l2 regularization lambda value
-			10) # batch size
-
-nn = CUP_NN(pg)
-# nn.train(train_X, train_Y, print_progress=True)
-nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/plot1.png", 10)
 
 
 

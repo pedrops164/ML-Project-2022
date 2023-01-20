@@ -174,7 +174,7 @@ class NN:
     # this function trains the neural network on dataset 1, and build a plot graph
     # comparing the learning curves of datasets 1 and 2
     # also receives as input the path to the file to save the plot
-    def plot_learning_curves(self, X1, Y1, X2, Y2, filepath, trials, print_progress=False):
+    def plot_learning_curves(self, X1, Y1, X2, Y2, filepath=None, trials=1, print_progress=False):
         train_size = range(self.n_it)
         train_Y_accuracy = []  # measure (accuracy)
         test_Y_accuracy = []  # measure (accuracy)
@@ -251,10 +251,8 @@ class NN:
 
 
         # make_plot(train_size, train_Y_accuracy, test_Y_accuracy, "Accuracy", "Epochs vs Accuracy", different_file_path)
-        make_plot(train_size, self.tr_loss_lc, self.ts_loss_lc, "MEE", "Epochs vs MEE", filepath, ylim=(0,3))
-
-        # plt.savefig(filepath)
-        # plt.show()
+        if filepath != None:
+            make_plot(train_size, self.tr_loss_lc, self.ts_loss_lc, "MEE", "Epochs vs MEE", filepath, ylim=(0,3))
 
         final_test_measured = [np.mean(measured_accuracy_test), np.mean(measured_loss_test)]
         final_train_measured = [np.mean(measured_accuracy_train), np.mean(measured_loss_train)]

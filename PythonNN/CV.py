@@ -15,7 +15,7 @@ class CrossValidation:
     Receives ParamConfig object, the input data, and an int k (k-cross validation)
     Returns the mean training error, and validation error
     '''
-    def cross_validation(self, nn_class, pg, X, Y, test_X, test_Y, plot_file_path):
+    def cross_validation(self, nn_class, pg, X, Y, test_X=None, test_Y=None, plot_file_path=None):
         #it is assumed that the input data is shuffled
         block_size = math.floor(len(X) / self.k)
         n_inputs = X.shape[1]
@@ -50,6 +50,7 @@ class CrossValidation:
     
         neural_network = nn_class(pg)
         #we train on all training+validation data this time
-        neural_network.plot_learning_curves(X, Y, test_X, test_Y,plot_file_path,trials=1)
+        if plot_file_path != None:
+            neural_network.plot_learning_curves(X, Y, test_X, test_Y,plot_file_path,trials=1,print_progress=True)
 
         return neural_network, np.mean(training_errors), np.mean(validation_errors)
