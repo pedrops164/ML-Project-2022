@@ -27,6 +27,9 @@
     <Compile Include="ActivationFunction2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PlotMaker.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LossMeanSquare.py">
       <SubType>Code</SubType>
     </Compile>

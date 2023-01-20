@@ -1,4 +1,4 @@
-
+import math
 class ParameterAdjuster:
 
     def __init__(self, learning_rate=0.7, decay=0., momentum=0., min_lr = 0., lambda_param=0.):
@@ -16,14 +16,14 @@ class ParameterAdjuster:
             # and if we haven't reached the minimum learning rate
             self.lr = self.lr * (1. / (1. + self.lr_decay))
 
-    def adjust_parameters(self, layer):
+    def adjust_parameters(self, layer, batch_multiplier):
 
-        weight_changes = self.momentum * layer.momentums_weight \
-            -self.lr * layer.weights_deriv - 2 * self.lambda_param * layer.weights
+        weight_changes = self.momentum * layer.momentums_weight + \
+            math.sqrt(batch_multiplier) * (-self.lr * layer.weights_deriv - 2 * self.lambda_param * layer.weights)
         layer.momentums_weight = weight_changes
 
-        bias_changes = self.momentum * layer.momentums_bias \
-            -self.lr * layer.biases_deriv
+        bias_changes = self.momentum * layer.momentums_bias + \
+            math.sqrt(batch_multiplier) * (-self.lr * layer.biases_deriv * batch_multiplier)
         layer.momentums_bias = bias_changes
 
         # update weight and biases with the variation

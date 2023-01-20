@@ -132,16 +132,16 @@ class NN:
             self.first_layer.backprop(previous_layer.inputs_deriv)
 
 
-    def adjust_parameters(self):
+    def adjust_parameters(self, batch_multiplier):
         self.param_adjuster.decay_lr()
 
         if self.first_layer != None:
-            self.param_adjuster.adjust_parameters(self.first_layer)
+            self.param_adjuster.adjust_parameters(self.first_layer, batch_multiplier)
         
         for layer in self.hidden_layers:
-            self.param_adjuster.adjust_parameters(layer)
+            self.param_adjuster.adjust_parameters(layer, batch_multiplier)
 
-        self.param_adjuster.adjust_parameters(self.last_layer)
+        self.param_adjuster.adjust_parameters(self.last_layer, batch_multiplier)
         self.param_adjuster.increase_iteration()
 
     def train(self, X, Y, print_progress=False):
@@ -162,7 +162,7 @@ class NN:
 
                 predicted_Y, loss = self.forward(X_batch, Y_batch)
                 self.back_prop(Y_batch)
-                self.adjust_parameters()
+                self.adjust_parameters(1/n_batches)
                 if i%5==0 and print_progress:
                     print("Iteration: ", i, ", Batch: ", j)
                     self.print_measures(predicted_Y, Y_batch)
@@ -202,7 +202,7 @@ class NN:
                 Y_pred, loss = self.forward(X_batch, Y_batch)
                 #we backprop and adjust the parameters of the layers
                 self.back_prop(Y_batch)
-                self.adjust_parameters()
+                self.adjust_parameters(1/n_batches)
 
             # here we calculate the loss with the full batch, for both data sets
 
@@ -223,7 +223,7 @@ class NN:
             data1_measure_loss = MEE().calculate(Y1_predicted, Y1)
             train_Y_accuracy.append(data1_measure_accuracy)
             self.tr_loss_lc.append(data1_measure_loss)
-            if i % 200 == 0 and print_progress:
+            if i % 50 == 0 and print_progress:
                 print("Iteration: ", i)
                 self.print_measures(Y1_predicted, Y1)
                 self.print_measures(Y2_predicted, Y2)
