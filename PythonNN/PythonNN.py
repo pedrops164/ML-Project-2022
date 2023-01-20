@@ -179,7 +179,9 @@ grid2 = Grid([2], # number of hidden layers
 
 config_list += grid2.configs
 
-model = Model()
+logfile = open("outputs/log.txt", "w")
+
+model = Model(logfile)
 model.model_selection(train_X, train_Y, test_X, test_Y, config_list, CrossValidation(k=4, runs=1), top_n=1)
 model.model_assessment(test_X, test_Y)
 model.reset_params()
@@ -212,4 +214,5 @@ nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/plot1.png", 1
 
 end = time.time()
 
-print("elapsed time: ", end - start)
+logfile.write("elapsed time: " +  str(end - start))
+logfile.close()
