@@ -16,13 +16,10 @@ class Model:
         best_training_error = None
         best_validation_error = None
         current_cfg = 1
-<<<<<<< Updated upstream
         print("Initial configs: ", len(configs))
         #configs = remove_bad_configs(CUP_NN, configs, X, Y)
-=======
         self.logfile.write("Initial configs: " + str(len(configs)) + "\n")
         configs = remove_bad_configs(CUP_NN, configs, X, Y)
->>>>>>> Stashed changes
         n_configs = len(configs)
         self.logfile.write("Filtered configs: " + str(n_configs) + "\n")
         if self.top_n > n_configs:

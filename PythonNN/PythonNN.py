@@ -212,4 +212,4 @@ nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/plot1.png", 1
 
 end = time.time()
 
-print(elapsed time: ", end - start)
+print("elapsed time: ", end - start)
