@@ -2,8 +2,12 @@ from CV import CrossValidation
 from CUP_NN import CUP_NN
 from PlotMaker import make_plot
 import numpy as np
+from Grid import Grid
 
 class Model:
+    def __init__(self, file):
+        self.logfile = file
+
     def model_selection(self, X, Y, test_X, test_Y, configs, cv, top_n=1):
     
         self.top_n = top_n
@@ -12,10 +16,15 @@ class Model:
         best_training_error = None
         best_validation_error = None
         current_cfg = 1
+<<<<<<< Updated upstream
         print("Initial configs: ", len(configs))
         #configs = remove_bad_configs(CUP_NN, configs, X, Y)
+=======
+        self.logfile.write("Initial configs: " + str(len(configs)) + "\n")
+        configs = remove_bad_configs(CUP_NN, configs, X, Y)
+>>>>>>> Stashed changes
         n_configs = len(configs)
-        print("Filtered configs: ", n_configs)
+        self.logfile.write("Filtered configs: " + str(n_configs) + "\n")
         if self.top_n > n_configs:
             self.top_n = n_configs
 
@@ -47,10 +56,10 @@ class Model:
                 best_training_error = tr_error
                 best_validation_error = vl_error
 
-            print("\nConfig " + str(current_cfg) + " of " + str(len(configs)))
-            print("\nParams: " + config.toString())
-            print("Training error: " + str(tr_error))
-            print("Validation error: " + str(vl_error) + "\n")
+            self.logfile.write("\nConfig " + str(current_cfg) + " of " + str(len(configs)) + "\n")
+            self.logfile.write("\nParams: " + config.toString() + "\n")
+            self.logfile.write("Training error: " + str(tr_error) + "\n")
+            self.logfile.write("Validation error: " + str(vl_error) + "\n")
             current_cfg += 1
 
         
@@ -101,16 +110,16 @@ class Model:
         self.test_error = np.mean(losses)
 
     def print_model(self):
-        print("Training error: " + str(self.training_error))
-        print("Validation error: " + str(self.validation_error))
-        print("Test error: " + str(self.test_error))
-        print("Final Hyper parameters:\n")
+        self.logfile.write("Training error: " + str(self.training_error) + "\n")
+        self.logfile.write("Validation error: " + str(self.validation_error) + "\n")
+        self.logfile.write("Test error: " + str(self.test_error) + "\n")
+        self.logfile.write("Final Hyper parameters:\n\n")
         for i in range(self.top_n):
-            print("Model ", i)
-            print("Training error: ", self.training_errors[i])
-            print("Validation error: ", self.validation_errors[i])
+            self.logfile.write("Model " + str(i) + "\n")
+            self.logfile.write("Training error: " + str(self.training_errors[i]) + "\n")
+            self.logfile.write("Validation error: " + str(self.validation_errors[i]) + "\n")
             current_nn = self.neural_networks[i]
-            print(current_nn.getParamConfig())
+            self.logfile.write(current_nn.getParamConfig() + "\n")
 
     # Given an input, returns the expected output of the trained neural network
     def calculate_output(self, input):
@@ -144,3 +153,24 @@ def remove_bad_configs(nn, config_list, X, Y, loss_threshold = 100.):
             decent_configs.append(config)
 
     return decent_configs
+
+"""
+This function receives a param config object, and returns a list of configs that slightly tweak some
+hyperparameters
+"""
+def create_fine_grid(pg, lr_gap=0.005, lambda_param_gap=0.00005):
+    new_lr_list = np.random.uniform(pg.lr - gap, pg.lr + gap, 5)
+    new_lambda_list = np.random.uniform(pg.lambda_param - lambda_param_gap, pg.lambda_param + lambda_param_gap, 5)
+
+    grid = Grid([pg.n_hl],
+                [pg.neurons_per_hl],
+                [pg.n_it],
+                new_lr_list,
+                [pg.lr_decay],
+                [pg.momentum],
+                [pg.min_lr],
+                new_lambda_list,
+                [batch_size])
+
+
+    return grid.configs

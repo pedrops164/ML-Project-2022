@@ -4,10 +4,17 @@ class Layer:
 	#Initializing weights and biases
 	def __init__(self, n_inputs, n_neurons, activ_function=None):
 		#self.weights = 0.05 * np.random.randn(n_inputs,n_neurons)
+<<<<<<< Updated upstream
 		limit = 0.1
 		self.n_inputs = n_inputs
 		self.n_neurons = n_neurons
 		#self.weights = 0.01 * np.random.randn(n_inputs, n_neurons)
+=======
+		limit = 0.7
+		self.n_inputs = n_inputs
+		self.n_neurons = n_neurons
+		#self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
+>>>>>>> Stashed changes
 		self.weights = np.random.uniform(-limit, limit, size=(n_inputs,n_neurons))
 		self.biases = np.zeros((1, n_neurons))
 		self.activ = activ_function
