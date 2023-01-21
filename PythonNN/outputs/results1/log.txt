@@ -1,0 +1,490 @@
+Initial configs: 360
+Filtered configs: 360
+
+Params of best config: 
+N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.005
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 0
+Batch size: 0
+Training error: 1.5623083120066494
+Validation error: 1.603257674790672
+Now trying out the finer configs...
+
+Config 1 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 0
+Training error: 1.567012103183245
+Validation error: 1.632532741525696
+
+Config 2 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 0
+Training error: 1.5885456004475644
+Validation error: 1.6521336610079054
+
+Config 3 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 5.445665061144786e-06
+Batch size: 0
+Training error: 1.6525211473960257
+Validation error: 1.6905229055925701
+
+Config 4 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 0
+Training error: 1.594891114234731
+Validation error: 1.6746219495455472
+
+Config 5 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 1.2942410871934829e-05
+Batch size: 0
+Training error: 1.6905820265488556
+Validation error: 1.7271898668421584
+
+Config 6 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.002928065188956664
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 0
+Training error: 1.6588958057844785
+Validation error: 1.7136891712590894
+
+Config 7 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.002928065188956664
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 0
+Training error: 1.6846244132293235
+Validation error: 1.7407139589537777
+
+Config 8 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.002928065188956664
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 5.445665061144786e-06
+Batch size: 0
+Training error: 1.7332457460359139
+Validation error: 1.7685921256383503
+
+Config 9 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.002928065188956664
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 0
+Training error: 1.6876593872692558
+Validation error: 1.7495176406544068
+
+Config 10 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.002928065188956664
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 1.2942410871934829e-05
+Batch size: 0
+Training error: 1.7543535550252618
+Validation error: 1.7872220309997624
+
+Config 11 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 0
+Training error: 1.4467257799110347
+Validation error: 1.5383570252430032
+
+Config 12 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 0
+Training error: 1.4589817539778354
+Validation error: 1.5558594265587065
+
+Config 13 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 5.445665061144786e-06
+Batch size: 0
+Training error: 1.5120935583121653
+Validation error: 1.5668429742534344
+
+Config 14 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 0
+Training error: 1.4752561190785776
+Validation error: 1.5797048253065897
+
+Config 15 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 1.2942410871934829e-05
+Batch size: 0
+Training error: 1.539747974726814
+Validation error: 1.5945772866063708
+
+Config 16 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0037861677411255117
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 0
+Training error: 1.5828060613589132
+Validation error: 1.6443094733141665
+
+Config 17 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0037861677411255117
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 0
+Training error: 1.602677906358692
+Validation error: 1.6853176061723407
+
+Config 18 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0037861677411255117
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 5.445665061144786e-06
+Batch size: 0
+Training error: 1.6552829345970412
+Validation error: 1.6952930944220657
+
+Config 19 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0037861677411255117
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 0
+Training error: 1.5954002131377416
+Validation error: 1.6855097222460864
+
+Config 20 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0037861677411255117
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 1.2942410871934829e-05
+Batch size: 0
+Training error: 1.6866996299936567
+Validation error: 1.719091915486322
+
+Config 21 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0030851850614593067
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 0
+Training error: 1.6425876088629656
+Validation error: 1.701202173217835
+
+Config 22 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0030851850614593067
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 0
+Training error: 1.6635304163878852
+Validation error: 1.7229948968223527
+
+Config 23 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0030851850614593067
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 5.445665061144786e-06
+Batch size: 0
+Training error: 1.7205133555554457
+Validation error: 1.7565499158494395
+
+Config 24 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0030851850614593067
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 0
+Training error: 1.6424019018748268
+Validation error: 1.7122541435277305
+
+Config 25 of 25
+
+Params: N hidden layers: 1
+Neurons per hidden layer: 25
+N epochs: 3500
+Initial learning rate: 0.0030851850614593067
+Learning rate decay: 0
+Momentum: 0.8
+Minimum learning rate: 0
+Lambda: 1.2942410871934829e-05
+Batch size: 0
+Training error: 1.7463895983342523
+Validation error: 1.78220045234579
+
+Training error: 1.5295622294700977
+Validation error: 1.6043265959290467
+Test error: 1.5969417559159367
+Final Hyper parameters:
+
+Neural Network 0
+Training error: 1.4467257799110347
+Validation error: 1.5383570252430032
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 1119
+
+Neural Network 1
+Training error: 1.4589817539778354
+Validation error: 1.5558594265587065
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 1119
+
+Neural Network 2
+Training error: 1.5120935583121653
+Validation error: 1.5668429742534344
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: 5.445665061144786e-06
+Batch size: 1119
+
+Neural Network 3
+Training error: 1.4752561190785776
+Validation error: 1.5797048253065897
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 1119
+
+Neural Network 4
+Training error: 1.539747974726814
+Validation error: 1.5945772866063708
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.007369106588873315
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: 1.2942410871934829e-05
+Batch size: 1119
+
+Neural Network 5
+Training error: 1.567012103183245
+Validation error: 1.632532741525696
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 1119
+
+Neural Network 6
+Training error: 1.5828060613589132
+Validation error: 1.6443094733141665
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.0037861677411255117
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -3.780735434913986e-05
+Batch size: 1119
+
+Neural Network 7
+Training error: 1.5885456004475644
+Validation error: 1.6521336610079054
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -4.2690093513434016e-05
+Batch size: 1119
+
+Neural Network 8
+Training error: 1.594891114234731
+Validation error: 1.6746219495455472
+Number of hidden layer: 1
+Number of neurons per hidden layer: 25
+Number of epochs: 3500
+Initial learning rate: 0.003800619794392228
+Learning Rate decay: 0
+Momentum value: 0.8
+Minimum learning rate: 0
+Lambda: -4.47525568763815e-05
+Batch size: 1119
+
+elapsed time: 27008.940680503845

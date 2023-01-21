@@ -29,7 +29,9 @@ class Model:
 
         # This for cycle does a grid search with all the parameter configs, and chooses the one
         # with the least validation error
+        current_cfg = 1
         for config in configs:
+            print(current_cfg)
             # config is of type ParamConfig
 
             # we dont want the plots of these configs
@@ -44,6 +46,8 @@ class Model:
                 best_config = config
                 best_training_error = tr_error
                 best_validation_error = vl_error
+
+            current_cfg += 1
 
         self.logfile.write("\nParams of best config: \n" + best_config.toString() + "\n")
         self.logfile.write("Training error: " + str(best_training_error) + "\n")
