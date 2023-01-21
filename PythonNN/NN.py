@@ -57,11 +57,11 @@ class NN:
 
             # here we initialize the first layer seperately, because the number of inputs
             # is the number of inputs of the neural network
-            self.first_layer = Layer(n_inputs, self.neurons_per_hidden_layer, Sigmoid())
+            self.first_layer = Layer(n_inputs, self.neurons_per_hidden_layer, Activation_ReLU())
             for i in range(self.n_hiddenlayers-1):
                 # now we initialize the inner hidden layers, where the number of inputs and
                 # outputs are the same (number of neurons per hidden layer)
-                hidden_layer = Layer(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Sigmoid())
+                hidden_layer = Layer(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
                 self.hidden_layers.append(hidden_layer)
 
             self.last_layer = Layer(self.neurons_per_hidden_layer, n_outputs, activ_out)

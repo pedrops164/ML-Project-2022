@@ -155,8 +155,8 @@ train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0
 
 config_list = []
 
-grid = Grid([1,4], # number of hidden layers
-			[25,50,75,100,150,200], # neurons per hidden layer
+grid = Grid([1,2,4], # number of hidden layers
+			[25,50,75,100,200], # neurons per hidden layer
 			[1500,2000,2500,3000,3500], # number of iterations
 			[0.005], # initial learning rate
 			[0], # learning rate decay

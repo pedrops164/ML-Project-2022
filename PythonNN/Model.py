@@ -183,8 +183,16 @@ This function receives a param config object, and returns a list of configs that
 hyperparameters
 """
 def create_fine_grid(pg, lr_gap=0.005, lambda_param_gap=0.00005):
-    new_lr_list = np.random.uniform(pg.lr - lr_gap, pg.lr + lr_gap, 5)
-    new_lambda_list = np.random.uniform(pg.lambda_param - lambda_param_gap, pg.lambda_param + lambda_param_gap, 5)
+    minlr = pg.lr - lr_gap
+    maxlr = pg.lr + lr_gap
+    if minlr < 0:
+        minlr = 0
+    minlambda = pg.lambda_param - lambda_param_gap
+    maxlambda = pg.lambda_param + lambda_param_gap
+    if minlambda < 0:
+        minlambda = 0
+    new_lr_list = np.random.uniform(minlr, maxlr, 5)
+    new_lambda_list = np.random.uniform(minlambda, maxlambda, 5)
 
     grid = Grid([pg.n_hl],
                 [pg.neurons_per_hl],
