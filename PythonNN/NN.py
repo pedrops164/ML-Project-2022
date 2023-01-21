@@ -102,6 +102,14 @@ class NN:
 
         self.last_layer.reset_params()
 
+        #resets the parameter adjuster
+        self.param_adjuster = ParameterAdjuster(
+            learning_rate=self.lr,
+           decay=self.lr_decay,
+          momentum=self.m,
+         min_lr = self.min_lr,
+        lambda_param = self.lambda_param)
+
     def regularization_loss(self):
         weight_sum = 0
         if self.lambda_param > 0:

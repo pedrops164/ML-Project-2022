@@ -123,6 +123,8 @@ class Model:
         # on new test data. Returns an estimation value (loss)
         outputs = []
         losses = []
+        if len(self.neural_networks) < self.top_n:
+            self.top_n = len(self.neural_networks)
         for i in range(self.top_n):
             current_nn = self.neural_networks[i]
             output, loss = current_nn.forward(test_X, test_Y)
@@ -132,12 +134,12 @@ class Model:
         self.test_error = np.mean(losses)
 
     def print_model(self):
-        self.logfile.write("Training error: " + str(self.training_error) + "\n")
+        self.logfile.write("\nTraining error: " + str(self.training_error) + "\n")
         self.logfile.write("Validation error: " + str(self.validation_error) + "\n")
         self.logfile.write("Test error: " + str(self.test_error) + "\n")
         self.logfile.write("Final Hyper parameters:\n\n")
         for i in range(self.top_n):
-            self.logfile.write("Model " + str(i) + "\n")
+            self.logfile.write("Neural Network " + str(i) + "\n")
             self.logfile.write("Training error: " + str(self.training_errors[i]) + "\n")
             self.logfile.write("Validation error: " + str(self.validation_errors[i]) + "\n")
             current_nn = self.neural_networks[i]
@@ -181,8 +183,8 @@ This function receives a param config object, and returns a list of configs that
 hyperparameters
 """
 def create_fine_grid(pg, lr_gap=0.005, lambda_param_gap=0.00005):
-    new_lr_list = np.random.uniform(pg.lr - lr_gap, pg.lr + lr_gap, 2)
-    new_lambda_list = np.random.uniform(pg.lambda_param - lambda_param_gap, pg.lambda_param + lambda_param_gap, 2)
+    new_lr_list = np.random.uniform(pg.lr - lr_gap, pg.lr + lr_gap, 5)
+    new_lambda_list = np.random.uniform(pg.lambda_param - lambda_param_gap, pg.lambda_param + lambda_param_gap, 5)
 
     grid = Grid([pg.n_hl],
                 [pg.neurons_per_hl],

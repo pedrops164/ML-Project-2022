@@ -3,15 +3,9 @@ import numpy as np
 class Layer:
 	#Initializing weights and biases
 	def __init__(self, n_inputs, n_neurons, activ_function=None):
-		#self.weights = 0.05 * np.random.randn(n_inputs,n_neurons)
-		limit = 0.1
+		limit = 0.05
 		self.n_inputs = n_inputs
 		self.n_neurons = n_neurons
-		#self.weights = 0.01 * np.random.randn(n_inputs, n_neurons)
-		limit = 0.7
-		self.n_inputs = n_inputs
-		self.n_neurons = n_neurons
-		#self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
 		self.weights = np.random.uniform(-limit, limit, size=(n_inputs,n_neurons))
 		self.biases = np.zeros((1, n_neurons))
 		self.activ = activ_function
@@ -48,7 +42,7 @@ class Layer:
 	# 	self.biases = self.biases - alpha * self.biases_deriv
 
 	def reset_params(self):
-		limit = 0.1
+		limit = 0.05
 		self.weights = np.random.uniform(-limit, limit, size=(self.n_inputs,self.n_neurons))
 		self.biases = np.zeros((1, self.n_neurons))
 		self.momentums_weight = np.zeros_like(self.weights)

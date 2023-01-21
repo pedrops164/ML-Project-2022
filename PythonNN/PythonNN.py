@@ -158,12 +158,22 @@ config_list = []
 grid = Grid([1,4], # number of hidden layers
 			[25,50,75,100,150,200], # neurons per hidden layer
 			[1500,2000,2500,3000,3500], # number of iterations
-			[0.005,0.0075,0.01], # initial learning rate
+			[0.005], # initial learning rate
 			[0], # learning rate decay
 			[0.7, 0.8], # momentum value
 			[0], # minimum learning rate
 			[0,0.00005,0.0001], # l2 regularization lambda value
 			[0]) # batch size
+
+#grid = Grid([1], # number of hidden layers
+#			[10], # neurons per hidden layer
+#			[300], # number of iterations
+#			[0.005, 0.0075,0.01], # initial learning rate
+#			[0], # learning rate decay
+#			[0.8], # momentum value
+#			[0], # minimum learning rate
+#			[0], # l2 regularization lambda value
+#			[0]) # batch size
 
 
 
@@ -174,18 +184,13 @@ model.model_selection(train_X, train_Y, test_X, test_Y, grid.configs, CrossValid
 model.model_assessment(test_X, test_Y)
 model.reset_params()
 
-#this time we train the best models with the whole
+#this time we train the best models with the whole dataset
 X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
 model.retrain(X, Y)
 
 model.print_model()
 
 finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
-"""
-
-"""
-
-
 
 end = time.time()
 

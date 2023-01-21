@@ -19,11 +19,11 @@ class ParameterAdjuster:
     def adjust_parameters(self, layer, batch_multiplier):
 
         weight_changes = self.momentum * layer.momentums_weight + \
-            math.sqrt(batch_multiplier) * (-self.lr * layer.weights_deriv - 2 * self.lambda_param * layer.weights)
+            batch_multiplier * (-self.lr * layer.weights_deriv - 2 * self.lambda_param * layer.weights)
         layer.momentums_weight = weight_changes
 
         bias_changes = self.momentum * layer.momentums_bias + \
-            math.sqrt(batch_multiplier) * (-self.lr * layer.biases_deriv * batch_multiplier)
+            batch_multiplier * (-self.lr * layer.biases_deriv * batch_multiplier)
         layer.momentums_bias = bias_changes
 
         # update weight and biases with the variation
