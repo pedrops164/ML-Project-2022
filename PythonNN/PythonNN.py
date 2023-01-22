@@ -2,14 +2,9 @@ import numpy as np
 import time
 
 from Model import Model
-from LossFunctions import BCE
-from Accuracy import Accuracy
-from NN import NN
 from CV import CrossValidation
 from Grid import Grid
-from ParamConfig import ParamConfig
 from MONK_NN import *
-from CUP_NN import CUP_NN
 
 def initialize_cup_tr(path, test_size_proportion):
 
@@ -164,17 +159,6 @@ grid = Grid([2,4], # number of hidden layers
 			[0], # minimum learning rate
 			[0,0.00005,0.0001], # l2 regularization lambda value
 			[0]) # batch size
-
-#grid = Grid([1], # number of hidden layers
-#			[10], # neurons per hidden layer
-#			[300], # number of iterations
-#			[0.005, 0.0075,0.01], # initial learning rate
-#			[0], # learning rate decay
-#			[0.8], # momentum value
-#			[0], # minimum learning rate
-#			[0], # l2 regularization lambda value
-#			[0]) # batch size
-
 
 
 logfile = open("outputs/log.txt", "w")

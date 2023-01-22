@@ -1,4 +1,3 @@
-from CV import CrossValidation
 from CUP_NN import CUP_NN
 from PlotMaker import make_plot
 import numpy as np

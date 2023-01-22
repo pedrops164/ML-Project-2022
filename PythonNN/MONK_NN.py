@@ -5,7 +5,6 @@ from LossFunctions import BCE
 from Accuracy import Accuracy
 import csv
 from ActivationFunctions import Sigmoid
-from ParamConfig import ParamConfig
 import numpy as np
 
 class MONK_NN(NN):

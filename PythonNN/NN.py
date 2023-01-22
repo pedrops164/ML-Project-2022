@@ -1,6 +1,6 @@
 from matplotlib import pyplot
 
-from ActivationFunctions import Activation_ReLU, Activation_Linear, Sigmoid
+from ActivationFunctions import Activation_ReLU
 from Layer import Layer
 import math
 import numpy as np
@@ -363,15 +363,6 @@ class NN:
         plt.ylabel(MSE().title())
         plt.title("Epochs vs " + str(MSE().title()))
         plt.legend()
-
-        """
-        plt.subplot(1, 3, 3)
-        plt.plot(train_Y_accuracy, test_Y_accuracy, color="g", label="Accuracy (Train vs Test)")
-        plt.xlabel('Train Accuracy')
-        plt.ylabel('Test Accuracy')
-        plt.title("Train vs Test Accuracy")
-        plt.legend()
-        """
 
         plt.savefig(filepath)
         plt.show()
