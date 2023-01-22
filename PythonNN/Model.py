@@ -36,6 +36,8 @@ class Model:
 
             # we dont want the plots of these configs
             nn, tr_error, vl_error = cv.cross_validation(CUP_NN, config, X, Y)
+            if best_config == None:
+                best_config = config
             if best_training_error == None:
                 best_training_error = tr_error
             if best_validation_error == None:
@@ -53,7 +55,7 @@ class Model:
         self.logfile.write("Training error: " + str(best_training_error) + "\n")
         self.logfile.write("Validation error: " + str(best_validation_error) + "\n")
 
-        fine_search_configs = create_fine_grid(best_config, 0.0025, 0.00005)
+        fine_search_configs = create_fine_grid(best_config, 0.00125, 0.000025)
 
         current_cfg = 1
 
