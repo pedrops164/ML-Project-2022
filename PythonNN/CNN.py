@@ -13,7 +13,7 @@ class CNN:
             Sigmoid(),
             ReshapeLayer((5,26,26), (1, 5*26*26)),
             Dense(5*26*26, 100, Sigmoid()),
-            Dense(100,2, Sigmoid())            
+            Dense(100,10, Sigmoid())            
         ]
 
         self.lr = 0.1
@@ -50,21 +50,16 @@ class CNN:
 
 
 def preprocess_data(x, y, limit):
-    zero_index = np.where(y == 0)[0][:limit]
-    one_index = np.where(y == 1)[0][:limit]
-    all_indices = np.hstack((zero_index, one_index))
-    all_indices = np.random.permutation(all_indices)
-    x, y = x[all_indices], y[all_indices]
     x = x.reshape(len(x), 1, 28, 28)
     x = x.astype("float32") / 255
     y = np_utils.to_categorical(y)
-    y = y.reshape(len(y), 1, 2)
-    return x, y
+    y = y.reshape(len(y), 1, 10)
+    return x[:limit], y[:limit]
 
 def cnn_mnist():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    x_train, y_train = preprocess_data(x_train, y_train, 100)
-    x_test, y_test = preprocess_data(x_test, y_test, 100)
+    x_train, y_train = preprocess_data(x_train, y_train, 1000)
+    x_test, y_test = preprocess_data(x_test, y_test, 1000)
 
     cnn = CNN()
     cnn.train(x_train, y_train, 20)
