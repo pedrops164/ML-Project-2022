@@ -5,6 +5,8 @@ from Model import Model
 from CV import CrossValidation
 from Grid import Grid
 from MONK_NN import *
+from CUP_NN import CUP_NN
+from CNN import cnn_mnist
 
 def initialize_cup_tr(path, test_size_proportion):
 
@@ -80,103 +82,43 @@ def finalize_cup_file(blind_set_path, model):
 
 	output_file.close()
 
+def ml_cup():
+	start = time.time()
 
-start = time.time()
-
-"""
-# USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE MONK
-X1, Y1 = parse_monk("inputs/monks-1.train")
-X2, Y2 = parse_monk("inputs/monks-1.test")
-
-print(X1.shape)
-print(Y1.shape)
-# exit()
-
-n_hl = 1  # number of hidden layers
-neurons_per_hl = 5  # neurons per hidden layer
-n_it = 500  # number of iterations
-lr = 0.1  # initial learning rate
-lr_decay = 0  # learning rate decay
-momentum = 0.6 # momentum value
-min_lr = 0  # minimum learning rate
-lambda_param = 0  # l2 regularization lambda value
-batch_size = 0  # batch size
-pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
-
-nn = MONK_NN(pg)
-final_measure_train, final_measure_test = nn.plot_learning_curvesMonk(X1, Y1, X2, Y2, "plots/monk1_accuracy.png", 10)
-
-print("Train [Accuracy, Loss] =" + str(final_measure_train))
-print("Test [Accuracy, Loss] =" + str(final_measure_test))
-"""
-
-"""
-# USE THIS CODE TO TRY OUT DIFFERENT CONFIGS FOR THE CUP
-n_hl = 1  # number of hidden layers
-neurons_per_hl = 16  # neurons per hidden layer
-n_it = 25001  # number of iterations
-lr = 0.5  # initial learning rate
-lr_decay = 0  # learning rate decay
-momentum = 0.8  # momentum value
-min_lr = 0  # minimum learning rate
-lambda_param = 0.00001  # l2 regularization lambda value
-batch_size = 0  # batch size
-pg = ParamConfig(n_hl, neurons_per_hl, n_it, lr, lr_decay, momentum, min_lr, lambda_param, batch_size)
-#initializes the training/validation and testing set
-train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.2)
-# cv = CrossValidation(k=4, runs=1)
-nn = CUP_NN(pg)
-nn.plot_learning_curves(train_X, train_Y, test_X, test_Y, "outputs/teste.png",1)
-# does k fold cross validation with given runs, with the training/validation set, and
-# gives the final training and validation errors
-# nn, tr_errors, vl_errors = cv.cross_validation(CUP_NN, pg, train_X, train_Y)
-output, test_loss = nn.forward(test_X, test_Y)
-print(test_loss)
-# print(tr_errors) # final, average training errors
-# print(vl_errors) # final, average validation errors
-"""
-"""
-
-# IF YOU WANT TO BUILD THE PLOT FOR A CERTAIN ParamConfig pg, you do
-# nn = CUP_NN(pg)
-# final_measure_train, final_measure_test = nn.plot_learning_curves(X1, Y1, X2, Y2, MEE(), "plots/cup_mee.png", 5)
-# 
-# print(final_measure_train)
-# print(final_measure_test)
+	train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.25)
+	
+	config_list = []
+	
+	grid = Grid([2,4], # number of hidden layers
+				[25,50,75], # neurons per hidden layer
+				[1500,2000,2500,3000,3500], # number of iterations
+				[0.005], # initial learning rate
+				[0], # learning rate decay
+				[0.7, 0.8], # momentum value
+				[0], # minimum learning rate
+				[0,0.00005,0.0001], # l2 regularization lambda value
+				[0]) # batch size
+	
+	logfile = open("outputs/log.txt", "w")
+	
+	model = Model(logfile)
+	model.model_selection(train_X, train_Y, test_X, test_Y, grid.configs, CrossValidation(k=4, runs=1), top_n=9)
+	model.model_assessment(test_X, test_Y)
+	model.reset_params()
+	
+	#this time we train the best models with the whole dataset
+	X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
+	model.retrain(X, Y)
+	
+	model.print_model()
+	
+	finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
+	
+	end = time.time()
+	
+	logfile.write("elapsed time: " +  str(end - start))
+	logfile.close()
 
 
-"""
-train_X, train_Y, test_X, test_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0.25)
-
-config_list = []
-
-grid = Grid([2,4], # number of hidden layers
-			[25,50,75], # neurons per hidden layer
-			[1500,2000,2500,3000,3500], # number of iterations
-			[0.005], # initial learning rate
-			[0], # learning rate decay
-			[0.7, 0.8], # momentum value
-			[0], # minimum learning rate
-			[0,0.00005,0.0001], # l2 regularization lambda value
-			[0]) # batch size
-
-
-logfile = open("outputs/log.txt", "w")
-
-model = Model(logfile)
-model.model_selection(train_X, train_Y, test_X, test_Y, grid.configs, CrossValidation(k=4, runs=1), top_n=9)
-model.model_assessment(test_X, test_Y)
-model.reset_params()
-
-#this time we train the best models with the whole dataset
-X, Y, empty_X, empty_Y = initialize_cup_tr('inputs/ML-CUP22-TR.csv', 0)
-model.retrain(X, Y)
-
-model.print_model()
-
-finalize_cup_file('inputs/ML-CUP22-TS.csv', model)
-
-end = time.time()
-
-logfile.write("elapsed time: " +  str(end - start))
-logfile.close()
+# ml_cup()
+cnn_mnist()

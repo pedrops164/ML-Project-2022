@@ -8,6 +8,9 @@ class Sigmoid():
     def backprop(self, gradient):
         self.inputs_deriv = gradient * self.output * (1 - self.output)
 
+    def update(self, optimizer):
+        pass
+
 
 class Activation_ReLU:
     def forward(self, input):

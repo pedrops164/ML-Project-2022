@@ -1,7 +1,7 @@
 from matplotlib import pyplot
 
-from ActivationFunctions import Activation_ReLU
-from Layer import Layer
+from ActivationFunctions import Activation_ReLU, Activation_Linear, Sigmoid
+from Layer import Dense
 import math
 import numpy as np
 from LossFunctions import MEE, MSE
@@ -50,21 +50,21 @@ class NN:
             # Layer contains the weights and biases between two layers, therefore one Layer
             # object is enough
             self.first_layer = None
-            self.last_layer = Layer(n_inputs, n_outputs)
+            self.last_layer = Dense(n_inputs, n_outputs)
         else:
             # in this case there are hidden layers, so we initialize them and we add
             # to the list of hidden_layers 
 
             # here we initialize the first layer seperately, because the number of inputs
             # is the number of inputs of the neural network
-            self.first_layer = Layer(n_inputs, self.neurons_per_hidden_layer, Activation_ReLU())
+            self.first_layer = Dense(n_inputs, self.neurons_per_hidden_layer, Activation_ReLU())
             for i in range(self.n_hiddenlayers-1):
                 # now we initialize the inner hidden layers, where the number of inputs and
                 # outputs are the same (number of neurons per hidden layer)
-                hidden_layer = Layer(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
+                hidden_layer = Dense(self.neurons_per_hidden_layer, self.neurons_per_hidden_layer, Activation_ReLU())
                 self.hidden_layers.append(hidden_layer)
 
-            self.last_layer = Layer(self.neurons_per_hidden_layer, n_outputs, activ_out)
+            self.last_layer = Dense(self.neurons_per_hidden_layer, n_outputs, activ_out)
 
         # we define the loss function
         # self.loss = MEE()

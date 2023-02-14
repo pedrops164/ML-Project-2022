@@ -33,5 +33,7 @@ class ParameterAdjuster:
     def increase_iteration(self):
         self.n_iterations += 1
 
-
+class CNN_Optimizer:
+    def __init__(self, learning_rate=0.1):
+        self.lr = learning_rate
 

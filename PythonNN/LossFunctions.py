@@ -22,7 +22,8 @@ class BCE(Loss):
 
         # formula above
         loss = -(true_y * np.log(predicted_y) + (1-true_y) * np.log(1-predicted_y))
-        return np.mean(loss, axis=-1)
+        return np.mean(loss)
+        # return np.mean(loss, axis=-1)
 
     def backprop(self, Y):
         n_examples = Y.shape[0]
